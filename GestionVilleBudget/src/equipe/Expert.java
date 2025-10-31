@@ -6,32 +6,66 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Représente un expert capable de proposer des projets dans ses secteurs de compétence.
+ * Représente un expert capable de proposer des projets municipaux.
+ * 
+ * <p>Un expert possède des compétences dans un ou plusieurs secteurs
+ * et peut proposer des projets uniquement dans ces secteurs. Les projets
+ * sont générés de manière stochastique (aléatoire) lors du cycle de simulation.</p>
+ * 
+ * <p>Une équipe municipale peut avoir plusieurs experts.</p>
+ * 
+ * @author Votre Nom
+ * @version 1.0
+ * @see Secteur
+ * @see Projet
+ * @see EquipeMunicipale
  */
 public class Expert extends Personne {
     
-    // === Attributs ===
-    private Set<Secteur> secteursCompetence;  // Les secteurs dans lesquels l'expert peut proposer des projets
-    private Random random;  // Pour la génération stochastique
+    /** Les secteurs dans lesquels cet expert peut proposer des projets */
+    private Set<Secteur> secteursCompetence;
     
-    // === Constructeur ===
+    /** Générateur de nombres aléatoires pour le processus stochastique */
+    private Random random;
+    
+    /**
+     * Construit un nouvel expert avec ses secteurs de compétence.
+     * 
+     * @param nom le nom de famille de l'expert
+     * @param prenom le prénom de l'expert
+     * @param age l'âge de l'expert (en années)
+     * @param secteursCompetence l'ensemble des secteurs dans lesquels
+     *                           l'expert peut proposer des projets
+     *                           (ne doit pas être null ou vide)
+     */
     public Expert(String nom, String prenom, int age, Set<Secteur> secteursCompetence) {
         super(nom, prenom, age);
         this.secteursCompetence = secteursCompetence;
         this.random = new Random();
     }
     
-    // === Getter ===
+    /**
+     * Retourne les secteurs de compétence de cet expert.
+     * 
+     * @return l'ensemble des secteurs dans lesquels l'expert peut proposer des projets
+     */
     public Set<Secteur> getSecteursCompetence() {
         return secteursCompetence;
     }
     
-    // === Méthode principale ===
     /**
-     * Propose un certain nombre de projets dans les secteurs de compétence de l'expert.
+     * Propose un certain nombre de projets dans les secteurs de compétence.
      * 
-     * @param nombreProjets Le nombre de projets à proposer
-     * @return Une liste de projets proposés (non encore évalués)
+     * <p>Les projets sont générés de manière aléatoire. Chaque projet
+     * est créé dans un des secteurs de compétence de l'expert et possède
+     * un titre et une description générés automatiquement.</p>
+     * 
+     * <p>Note : les projets retournés ne sont pas encore évalués
+     * (coûts et bénéfice à null).</p>
+     * 
+     * @param nombreProjets le nombre de projets à proposer (doit être > 0)
+     * @return une liste de projets nouvellement créés (non évalués)
+     * @see #creerProjetAleatoire()
      */
     public List<Projet> proposerProjets(int nombreProjets) {
         List<Projet> projetsProposés = new ArrayList<>();
@@ -45,22 +79,28 @@ public class Expert extends Personne {
     }
     
     /**
-     * Crée un projet aléatoire dans un des secteurs de compétence de l'expert.
+     * Crée un projet aléatoire dans un des secteurs de compétence.
+     * 
+     * <p>Le secteur est choisi aléatoirement parmi les compétences de l'expert,
+     * et le titre/description sont générés automatiquement.</p>
+     * 
+     * @return un nouveau projet non évalué
+     * @see #choisirSecteurAleatoire()
+     * @see #genererTitre(Secteur)
+     * @see #genererDescription(Secteur)
      */
     private Projet creerProjetAleatoire() {
-        // Choisir un secteur aléatoire parmi les compétences
         Secteur secteurChoisi = choisirSecteurAleatoire();
-        
-        // Générer un titre et une description
         String titre = genererTitre(secteurChoisi);
         String description = genererDescription(secteurChoisi);
         
-        // Créer et retourner le projet (coûts et bénéfice seront évalués plus tard)
         return new Projet(titre, description, secteurChoisi);
     }
     
     /**
      * Choisit un secteur aléatoire parmi les compétences de l'expert.
+     * 
+     * @return un secteur choisi aléatoirement
      */
     private Secteur choisirSecteurAleatoire() {
         List<Secteur> secteursList = new ArrayList<>(secteursCompetence);
@@ -69,6 +109,12 @@ public class Expert extends Personne {
     
     /**
      * Génère un titre de projet selon le secteur.
+     * 
+     * <p>Le titre est choisi parmi un ensemble de préfixes
+     * caractéristiques du secteur, suivi d'un numéro aléatoire.</p>
+     * 
+     * @param secteur le secteur du projet
+     * @return un titre généré automatiquement
      */
     private String genererTitre(Secteur secteur) {
         String[] prefixes;
@@ -99,17 +145,28 @@ public class Expert extends Personne {
     
     /**
      * Génère une description de projet.
+     * 
+     * @param secteur le secteur du projet
+     * @return une description générique du projet
      */
     private String genererDescription(Secteur secteur) {
         return "Projet innovant dans le secteur " + secteur + 
                " visant à améliorer la vie des Dauphinois.e.s";
     }
     
+    /**
+     * Affiche le rôle de l'expert dans l'équipe municipale.
+     */
     @Override
     public void afficherRole() {
         System.out.println("Expert dans les secteurs : " + secteursCompetence);
     }
     
+    /**
+     * Retourne une représentation textuelle de l'expert.
+     * 
+     * @return une chaîne incluant le nom, l'âge et les secteurs de compétence
+     */
     @Override
     public String toString() {
         return super.toString() + " - Expert " + secteursCompetence;
