@@ -1,0 +1,44 @@
+Rapport du projet java : Gestion des budgets d’une ville
+
+
+Objectif du projet
+
+Simuler le fonctionnement d’une équipe municipale chargée de proposer, évaluer et sélectionner des projets pour la ville de Dauphine City, selon plusieurs types de coûts (économique, social, environnemental) et de bénéfices.
+Le projet inclura aussi une modélisation du problème du sac à dos multidimensionnel et sa résolution heuristique, les méthodes utilisées seront le glouton et hill climbing.
+
+
+PARTIE SIMULATION EQUIPE MUNICIPALE
+Structure du code
+
+Le package “equipe” à été créé pour y incorporer nos différentes classes.
+Les classes suivantes ont été intégrée dans le package :
+
+- Elu.java
+- EquipeMunicipale.java
+- Evaluateur.java
+- EvaluateurRole.java
+- Expert.java
+- Personne.java
+- Projet.java
+- Secteur.java
+- TestEquipe.java
+- TypeCout.java
+
+
+Rôles des différentes classes
+
+1. Élu : Évalue le bénéfice d’un projet
+2. Equipe Municipale : Regroupe élus, évaluateurs et experts, et gère la simulation
+3. Évaluateur : Évalue un coût spécifique (économique, social, environnemental)
+4. Expert : Propose des projets selon ses secteurs d’expertise
+5. Personnes : Classe de base pour toutes les personnes (classe mère)
+6. Projet : Contient les infos d’un projet (titre, description, coûts, bénéfice, secteur)
+7. Secteurs : Listes les différentes secteurs
+8. Test de l’équipe : Classe de test pour vérifier le fonctionnement de la simulation
+9. Type de coûts : Complémentaire pour les types de coûts
+
+PARTIE SAC A DOS MULTIDIMENSIONNEL
+
+PARTIE RÉSOLVEUR GLOUTONNES
+
+PARTIE RESOLVEUR HILL CLIMBING
