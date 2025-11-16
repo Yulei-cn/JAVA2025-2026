@@ -1,6 +1,7 @@
 package solveur.glouton;
 
 import java.util.Comparator;
+import java.util.List;
 import sacADos.Objet;
 
 public class Comparateurs {
@@ -34,4 +35,37 @@ public class Comparateurs {
         for (int v : t) if (v > max) max = v;
         return max;
     }
+    
+    /** Critère fmv : utilité / coût dans la dimension la plus en dépassement */
+    public static Comparator<Objet> fmv(int[] budgets, List<Objet> selection) {
+        return (o1, o2) -> {
+            double score1 = scoreFMV(o1, budgets, selection);
+            double score2 = scoreFMV(o2, budgets, selection);
+            return Double.compare(score2, score1); // décroissant
+        };
+    }
+
+    private static double scoreFMV(Objet o, int[] budgets, List<Objet> selection) {
+        int dimension = budgets.length;
+        int[] consommation = new int[dimension];
+
+        for (Objet obj : selection)
+            for (int i = 0; i < dimension; i++)
+                consommation[i] += obj.getCouts()[i];
+
+        // retrouver l'indice de la dimension la plus en dépassement
+        int worstDim = 0;
+        int maxDepassement = Integer.MIN_VALUE;
+        for (int i = 0; i < dimension; i++) {
+            int diff = consommation[i] - budgets[i];
+            if (diff > maxDepassement) {
+                maxDepassement = diff;
+                worstDim = i;
+            }
+        }
+
+        return (double) o.getUtilite() / o.getCouts()[worstDim];
+    }
+
 }
+
