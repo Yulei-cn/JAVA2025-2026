@@ -2,69 +2,91 @@ package equipe;
 
 /**
  * Représente l'élu(e) de la municipalité.
- * 
- * <p>L'élu(e) est responsable d'évaluer le bénéfice qu'un projet
- * apportera à la collectivité. Cette évaluation se fait via un
- * processus stochastique (génération aléatoire).</p>
- * 
- * <p>Il n'y a qu'un seul élu par équipe municipale.</p>
- * 
- * @author Votre Nom
- * @version 1.0
+ *
+ * <p>
+ * ⚠️ Améliorations pédagogiques intégrées :
+ * <ul>
+ *   <li><b>TP7</b> : gestion d'exceptions si le projet est invalide</li>
+ *   <li><b>TP9</b> : ajout d'une classe interne pour journaliser les évaluations</li>
+ * </ul>
+ * </p>
+ *
+ * <p>L'élu(e) est responsable d'évaluer le bénéfice attendu d'un projet
+ * pour la collectivité via un processus stochastique.</p>
+ *
+ * @author …
+ * @version 2.0
  * @see Projet
  * @see EquipeMunicipale
  */
 public class Elu extends Personne {
-    
+
     /**
-     * Construit un nouvel élu.
-     * 
-     * @param nom le nom de famille de l'élu
-     * @param prenom le prénom de l'élu
-     * @param age l'âge de l'élu (en années)
+     * Classe interne représentant un enregistrement de bénéfice.
+     * <p><b>(TP9 — utilisation de classes internes)</b></p>
+     */
+    public static class BeneficeLog {
+        private Projet projet;
+        private int benefice;
+
+        public BeneficeLog(Projet p, int b) {
+            this.projet = p;
+            this.benefice = b;
+        }
+
+        public Projet getProjet() { return projet; }
+        public int getBenefice() { return benefice; }
+
+        @Override
+        public String toString() {
+            return "[Projet=" + projet.getTitre() + ", bénéfice=" + benefice + "]";
+        }
+    }
+
+    /**
+     * Constructeur de l'élu(e).
      */
     public Elu(String nom, String prenom, int age) {
         super(nom, prenom, age);
     }
-    
+
     /**
-     * Évalue le bénéfice d'un projet pour la collectivité.
-     * 
-     * <p>Cette méthode génère un bénéfice de manière stochastique
-     * et l'attribue au projet.</p>
-     * 
-     * @param projet le projet à évaluer (ne doit pas être null)
-     * @see #genererBeneficeAleatoire()
+     * Évalue le bénéfice d'un projet.
+     *
+     * <p><b>(TP7 — gestion d'exceptions)</b><br>
+     * Lève une IllegalArgumentException si le projet est null.
+     * </p>
+     *
+     * <p><b>(TP9 — retourne un log interne pour journalisation)</b></p>
+     *
+     * @param projet projet à évaluer
+     * @return un BeneficeLog contenant les informations d’évaluation
      */
-    public void evaluerBenefice(Projet projet) {
+    public BeneficeLog evaluerBenefice(Projet projet) {
+
+        if (projet == null) {
+            throw new IllegalArgumentException(
+                "Projet null — impossible d’évaluer le bénéfice (TP7 : gestion d’exceptions).");
+        }
+
         int beneficeGenere = genererBeneficeAleatoire();
         projet.setBenefice(beneficeGenere);
+
+        return new BeneficeLog(projet, beneficeGenere);
     }
-    
+
     /**
-     * Génère un bénéfice aléatoire selon un processus stochastique.
-     * 
-     * <p>Le bénéfice généré se situe entre 50 000 et 200 000.</p>
-     * 
-     * @return un bénéfice aléatoire entre 50000 et 199999
+     * Génère un bénéfice aléatoire.
      */
     private int genererBeneficeAleatoire() {
         return 50000 + (int) (Math.random() * 150000);
     }
-    
-    /**
-     * Affiche le rôle de l'élu dans l'équipe municipale.
-     */
+
     @Override
     public void afficherRole() {
         System.out.println("Élu(e) de la municipalité");
     }
-    
-    /**
-     * Retourne une représentation textuelle de l'élu.
-     * 
-     * @return une chaîne incluant le nom, l'âge et le rôle
-     */
+
     @Override
     public String toString() {
         return super.toString() + " - Élu(e)";
