@@ -8,34 +8,43 @@ import sacADos.Objet;
 import sacADos.SacADos;
 
 /**
- * Solver glouton "à ajout" :
- *  - trie les objets selon un critère donné (Comparator)
- *  - ajoute les objets un par un tant que les budgets ne sont pas dépassés
+ * Implémente une méthode gloutonne « à ajout ».
+ *
+ * <p>
+ * Les objets sont triés selon un critère (fournit via un {@link Comparator}),
+ * puis considérés un par un :
+ * <ul>
+ *   <li>si l’objet peut être ajouté sans dépasser les budgets → il est gardé</li>
+ *   <li>sinon → il est ignoré</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Cette approche fournit une solution admissible rapide, mais pas nécessairement optimale.
+ * </p>
  */
 public class GloutonAjoutSolver {
 
     /**
-     * Résout le problème du sac à dos multidimensionnel via une méthode gloutonne à **ajout**
+     * Exécute la méthode gloutonne « à ajout ».
      *
-     * @param instance    l’instance du sac à dos (contient objets + budgets)
-     * @param comparateur permet de définir le critère "plus intéressant"
-     * @return une sélection d'objets admissible (respecte les budgets)
+     * @param instance    instance du sac à dos (objets + budgets)
+     * @param comparateur critère définissant l’ordre « du plus intéressant au moins intéressant »
+     * @return liste d’objets admissibles constituant la solution gloutonne
      */
     public List<Objet> resoudre(SacADos instance, Comparator<Objet> comparateur) {
 
-        // copier la liste d'objets pour ne pas modifier l’instance
+        // Copie des objets pour éviter de modifier les données de l’instance
         List<Objet> objetsTries = new ArrayList<>(instance.getObjets());
-
-        // tri selon le critère
         objetsTries.sort(comparateur);
 
         List<Objet> selection = new ArrayList<>();
 
-        // essai d'ajout dans l'ordre
+        // Parcours glouton
         for (Objet o : objetsTries) {
             selection.add(o);
 
-            // si dépasse budget → on retire l'objet
+            // Si l’ajout rend la solution non admissible → on annule
             if (!instance.estAdmissible(selection)) {
                 selection.remove(o);
             }
