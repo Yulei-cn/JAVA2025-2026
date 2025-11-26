@@ -3,11 +3,14 @@ Rapport du projet java : Gestion des budgets d’une ville
 
 Objectif du projet
 
-Simuler le fonctionnement d’une équipe municipale chargée de proposer, évaluer et sélectionner des projets pour la ville de Dauphine City, selon plusieurs types de coûts (économique, social, environnemental) et de bénéfices.
-Le projet inclura aussi une modélisation du problème du sac à dos multidimensionnel et sa résolution heuristique, les méthodes utilisées seront le glouton et hill climbing.
+Simuler le fonctionnement d’une équipe municipale chargée de proposer, évaluer et sélectionner des projets pour 
+la ville de Dauphine City, selon plusieurs types de coûts (économique, social, environnemental) et de bénéfices.
+Le projet inclura aussi une modélisation du problème du sac à dos multidimensionnel et sa résolution heuristique, 
+les méthodes utilisées seront le glouton et hill climbing.
 
 
-PARTIE SIMULATION EQUIPE MUNICIPALE
+=============== PARTIE SIMULATION EQUIPE MUNICIPALE ===============
+
 Structure du code
 
 Le package “equipe” à été créé pour y incorporer nos différentes classes.
@@ -25,7 +28,7 @@ Les classes suivantes ont été intégrée dans le package :
 - TypeCout.java
 
 
-Rôles des différentes classes
+--== Rôles des différentes classes ==--
 
 1. Élu : Évalue le bénéfice d’un projet
 2. Equipe Municipale : Regroupe élus, évaluateurs et experts, et gère la simulation
@@ -37,8 +40,94 @@ Rôles des différentes classes
 8. Test de l’équipe : Classe de test pour vérifier le fonctionnement de la simulation
 9. Type de coûts : Complémentaire pour les types de coûts
 
-PARTIE SAC A DOS MULTIDIMENSIONNEL
+=============== PARTIE SAC A DOS MULTIDIMENSIONNEL ===============
 
-PARTIE RÉSOLVEUR GLOUTONNES
+== OBJECTIF ==
 
-PARTIE RESOLVEUR HILL CLIMBING
+Modéliser le problème du sac à dos multidimensionnel afin de sélectionner des projets 
+en respectant des contraintes budgétaires multiples (économique, social, environnemental). 
+Chaque projet correspond à un “objet” avec : une utilité (bénéfice attendu), plusieurs coûts 
+(3 dimensions), et un ensemble de budgets à ne pas dépasser. Ce modèle sert ensuite de base 
+pour les algorithmes gloutons et hill climbing.
+
+Structure du code
+
+Le package sacADos contient les classes suivantes : 
+- Objet.java : représente un projet converti en objet pour le sac à dos (utilité + coûts multidimensionnels). 
+- SacADos.java : représente une instance complète du problème : 
+     - dimension du problème (nombre de coûts), 
+     - budgets maximaux, 
+     - liste des objets disponibles. 
+- VersSacADos.java : utilitaire permettant la conversion d’une liste de projets en instance de sac à dos. 
+- SacADosTest.java (si existant) : tests pour vérifier l’admissibilité et les calculs d’utilité.
+
+=============== PARTIE RÉSOLVEUR GLOUTONNES ===============
+
+== OBJECTIF ==
+
+Le but du solveur glouton est de fournir rapidement une solution initiale satisfaisante, 
+sans garantie d’optimalité, mais permettant ensuite un point de départ efficace pour 
+le Hill Climbing. 
+Deux variantes ont été implémentées : glouton par ajout et glouton par retrait.
+
+Structure du code Package : 
+- solveur.glouton Comparateurs.java Regroupe les différentes heuristiques d’ordre : 
+     - somme des coûts 
+     - utilité maximale 
+     - ratio utilité/coût 
+
+- GloutonAjoutSolver.java Ajoute les objets un par un selon un ordre déterminé par un comparateur. 
+- GloutonRetraitSolver.java Commence par tous les objets, puis retire les moins “intéressants” en premier.
+
+----=== Principe des méthodes ===---- 
+
+--= Glouton Ajout =--
+ 1. Trier les objets selon un comparateur. 
+ 2. Partir d’une solution vide. 
+ 3. Ajouter progressivement chaque objet tant que les budgets ne sont pas dépassés. 
+
+--= Glouton Retrait =-- 
+ 1. Démarrer avec tous les objets. 
+ 2. Retirer successivement les objets les moins rentables. 
+ 3. Une fois admissible, réessayer d’ajouter quelques objets intéressants.
+
+-= Résultats =- 
+Lors des tests effectués dans Main.java, les gloutons renvoient une solution admissible, 
+avec un bénéfice total correct, qui sert ensuite de point de départ pour le Hill Climbing.
+
+=============== PARTIE RESOLVEUR HILL CLIMBING ===============
+
+== OBJECTIF ==
+
+Améliorer une solution initiale (souvent fournie par un glouton) en explorant le voisinage des solutions pour augmenter le bénéfice total.
+Le Hill Climbing ne garantit pas l’optimum global, mais fournit un optimum local efficace.
+
+Structure du code Package : solveur.hillclimbing 
+
+Contient principalement : HillClimbingSolver.java 
+
+Cette classe implémente une version déterministe du Hill Climbing : 
+- point de départ = solution gloutonne 
+- voisinage = retirer un objet + en ajouter un autre
+- accepter uniquement les améliorations 
+- arrêt lorsqu’aucun voisin ne fournit d'utilité plus élevée
+
+Fonctionnement du Hill Climbing 
+
+1. Initialisation Copier la solution initiale. 
+2. Génération du voisinage Pour chaque objet de la solution : créer un voisin en retirant cet objet, 
+tester l’ajout d’un nouvel objet non présent. 
+3. Sélection du meilleur voisin admissible calculer l’utilité de chaque voisin, garder le meilleur voisin admissible. 
+4. Amélioration si le voisin est meilleur : remplacer la solution sinon : arrêter -> optimum local atteint
+
+
+-------==== CONCLUSION ====-------
+
+Ce projet modélise de bout en bout un système complet de : 
+ 1. Simulation d’une équipe municipale création, évaluation et filtrage de projets. 
+ 2. Transformation en instance de sac à dos multidimensionnel contraintes budgétaires multi-coûts, utilité maximale recherchée. 
+ 3. Résolution heuristique glouton (ajout et retrait), optimisation locale avec Hill Climbing. 
+
+La structure modulaire (packages séparés : equipe, sacADos, solveur) rend le projet clair, extensible et facile à maintenir. 
+Les résultats montrent que les heuristiques permettent d’obtenir des solutions admissibles de bonne qualité tout 
+en respectant les contraintes imposées.
