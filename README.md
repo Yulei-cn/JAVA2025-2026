@@ -10,3 +10,15 @@ Le projet comprend deux grandes parties :
 Simulation de l’équipe municipale : création de classes représentant les acteurs (experts, évaluateurs, élu·e) et les projets.
 
 Optimisation budgétaire : modélisation et résolution d’un problème du sac à dos multidimensionnel appliqué aux projets proposés.
+
+
+--= Description du projet =--
+
+Ce projet simule le fonctionnement d’une équipe municipale chargée : de proposer des projets, de les évaluer selon trois critères : 
+ 1. coût économique,
+ 2. coût social,
+ 3. coût environnemental,
+De déterminer leur bénéfice, puis de sélectionner les meilleurs projets en respectant les budgets de la ville -> grâce à un sac à dos multidimensionnel.
+Deux heuristiques ont été implémentées pour la sélection : Glouton (Greedy) version ajout version retrait Hill Climbing amélioration locale d’une solution gloutonne
+
+Execution possible a partir de VSCode avec Java JDK 17+, VS Code et Extension Pack for Java (dans VSCode).
