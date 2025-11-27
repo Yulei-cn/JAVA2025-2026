@@ -8,39 +8,80 @@ import sacADos.Objet;
 import sacADos.SacADos;
 
 /**
- * Solver glouton "à retrait" :
- *  - On part de S = O (tous les objets)
- *  - On retire les moins intéressants jusqu'à respecter le budget
- *  - Puis on tente de rajouter des objets avec un glouton à ajout
+ * Méthode gloutonne « à retrait ».
+ *
+ * <p>
+ * Étapes :
+ * <ol>
+ *   <li>On part de S = O (sélection complète)</li>
+ *   <li>On retire les objets du moins intéressant au plus intéressant
+ *       jusqu’à retrouver l’admissibilité</li>
+ *   <li>Une fois admissible, on tente de réajouter des objets avec
+ *       une méthode gloutonne « à ajout »</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
+ * Cette méthode combine un nettoyage (retrait) puis une amélioration (ajout).
+ * </p>
  */
 public class GloutonRetraitSolver {
 
     /**
-     * Résout le sac-à-dos multidimensionnel via une méthode gloutonne "à retrait".
+     * Résout le sac à dos multidimensionnel via une approche « à retrait ».
      *
-     * @param instance instance du sac à dos
-     * @param comparateur comparateur des objets pour définir "moins intéressant" → "plus intéressant"
-     * @param comparateurAjout comparateur à utiliser pour la phase d'ajout (glouton ajout)
-     * @return sélection finale d'objets admissible
+     * @param instance         instance du sac à dos
+     * @param compRetrait      comparateur définissant l’ordre du « moins intéressant »
+     * @param compAjout        comparateur pour la phase d’ajout
+     * @return sélection finale admissible
      */
-    public List<Objet> resoudre(SacADos instance, Comparator<Objet> comparateur,
-                                Comparator<Objet> comparateurAjout) {
+    public List<Objet> resoudre(
+            SacADos instance,
+            Comparator<Objet> compRetrait,
+            Comparator<Objet> compAjout) {
 
-        // S = O (copie de la liste initiale)
+        // --- 1) S = O (copie de tous les objets)
         List<Objet> selection = new ArrayList<>(instance.getObjets());
 
-        // tri du moins intéressant → plus intéressant
-        selection.sort(comparateur);
+        // --- 2) Trier du moins intéressant AU plus intéressant
+        selection.sort(compRetrait); // compRetrait doit fournir cet ordre
 
-        // phase de retrait
+        // --- 3) Phase de retrait : on enlève tant que ce n’est pas admissible
         for (Objet o : new ArrayList<>(selection)) {
             if (!instance.estAdmissible(selection)) {
                 selection.remove(o);
             }
         }
 
-        // si après retrait on est OK → on tente un ajout glouton
-        GloutonAjoutSolver gloutonAjout = new GloutonAjoutSolver();
-        return gloutonAjout.resoudre(instance, comparateurAjout);
+        // Si pas admissible même après retrait total → renvoyer vide
+        if (!instance.estAdmissible(selection)) {
+            return new ArrayList<>();
+        }
+
+        // --- 4) Phase d’ajout
+        // Repartir de la liste filtrée → on cherche à améliorer
+        List<Objet> debut = new ArrayList<>(selection);
+
+        List<Objet> resultat = new ArrayList<>(debut);
+        List<Objet> tous = instance.getObjets();
+
+        // objets qui ne sont pas déjà dans la sélection filtrée
+        List<Objet> candidats = new ArrayList<>();
+        for (Objet o : tous)
+            if (!debut.contains(o))
+                candidats.add(o);
+
+        // tri des candidats selon critère d’ajout
+        candidats.sort(compAjout);
+
+        // tentative d’ajout
+        for (Objet obj : candidats) {
+            resultat.add(obj);
+            if (!instance.estAdmissible(resultat)) {
+                resultat.remove(obj);
+            }
+        }
+
+        return resultat;
     }
 }

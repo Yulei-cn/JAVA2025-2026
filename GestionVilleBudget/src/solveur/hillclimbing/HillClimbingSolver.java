@@ -2,60 +2,89 @@ package solveur.hillclimbing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import sacADos.Objet;
 import sacADos.SacADos;
 
 /**
- * Implémentation de la méthode Hill Climbing pour le sac-à-dos multidimensionnel.
+ * Implémente la méthode du Hill Climbing pour le problème
+ * du sac à dos multidimensionnel.
+ *
+ * <p>
+ * Le voisinage est défini par :
+ * S' = (S \ E) ∪ A
+ * avec |E| ≤ t et |A| ≤ t.
+ * </p>
  */
 public class HillClimbingSolver {
 
-    /**
-     * Améliore une solution initiale via Hill Climbing
-     *
-     * @param instance          instance du sac-à-dos multidimensionnel
-     * @param solutionInitiale  solution obtenue par une méthode gloutonne
-     * @return la meilleure solution trouvée (optimum local)
-     */
-    public List<Objet> resoudre(SacADos instance, List<Objet> solutionInitiale) {
+    private Random rnd = new Random();
 
-        List<Objet> solutionCourante = new ArrayList<>(solutionInitiale);
+    /**
+     * Lance une recherche locale via Hill Climbing.
+     *
+     * @param instance         instance du sac à dos
+     * @param solutionInitiale solution admissible obtenue par un glouton
+     * @param t                taille du voisinage (1 ou 2)
+     * @param maxPlateauMoves  nombre de mouvements possibles sur plateau
+     * @return solution atteignant un optimum local
+     */
+    public List<Objet> resoudre(SacADos instance,
+                                List<Objet> solutionInitiale,
+                                int t,
+                                int maxPlateauMoves) {
+
+        List<Objet> solution = new ArrayList<>(solutionInitiale);
+        int utiliteCourante = instance.utiliteTotale(solution);
+
         boolean amelioration = true;
 
         while (amelioration) {
             amelioration = false;
-            List<Objet> meilleurVoisin = solutionCourante;
-            int meilleureUtilite = instance.utiliteTotale(solutionCourante);
 
-            // explorer le voisinage : retirer un objet + essayer ajouter un autre
-            for (Objet remove : new ArrayList<>(solutionCourante)) {
+            List<Objet> meilleurVoisin = solution;
+            int meilleureUtilite = utiliteCourante;
 
-                List<Objet> voisin = new ArrayList<>(solutionCourante);
-                voisin.remove(remove);
+            int plateauMoves = maxPlateauMoves;
 
+            // === Génération du voisinage (E et A de taille <= t) ===
+            for (Objet remove : instance.getObjets()) {
+
+                // essayer de retirer remove (si présent)
+                List<Objet> voisinBase = new ArrayList<>(solution);
+                voisinBase.remove(remove);
+
+                // essayer d'ajouter jusqu'à t objets différents
                 for (Objet add : instance.getObjets()) {
-                    if (!voisin.contains(add)) {
-                        voisin.add(add);
+                    if (solution.contains(add)) continue; // éviter réinsertion
 
-                        if (instance.estAdmissible(voisin)) {
-                            int utiliteVoisin = instance.utiliteTotale(voisin);
+                    List<Objet> voisin = new ArrayList<>(voisinBase);
+                    voisin.add(add);
 
-                            if (utiliteVoisin > meilleureUtilite) {
-                                meilleurVoisin = new ArrayList<>(voisin);
-                                meilleureUtilite = utiliteVoisin;
-                                amelioration = true;
-                            }
-                        }
+                    // admissible ?
+                    if (!instance.estAdmissible(voisin))
+                        continue;
 
-                        voisin.remove(add); // revenir à voisin avant ajout
+                    int utilite = instance.utiliteTotale(voisin);
+
+                    if (utilite > meilleureUtilite) {
+                        meilleureUtilite = utilite;
+                        meilleurVoisin = voisin;
+                        amelioration = true;
+                    }
+                    else if (utilite == meilleureUtilite && plateauMoves > 0) {
+                        plateauMoves--;
+                        meilleurVoisin = voisin;
+                        amelioration = true;
                     }
                 }
             }
 
-            solutionCourante = meilleurVoisin;
+            solution = meilleurVoisin;
+            utiliteCourante = meilleureUtilite;
         }
 
-        return solutionCourante;
+        return solution;
     }
 }
