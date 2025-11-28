@@ -74,7 +74,7 @@ public class Main {
         System.out.println("4. Tester les solveurs gloutons");
         System.out.println("5. Tester le Hill Climbing");
         System.out.println("0. Quitter");
-        System.out.print("Votre choix : ");
+        //System.out.print("Votre choix : ");
     }
 
     private static int lireEntier(String msg) {
