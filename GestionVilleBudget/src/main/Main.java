@@ -136,24 +136,48 @@ public class Main {
         System.out.println("Choisir le mode de génération de SacADos :");
         System.out.println("1. Budgets = coûts (eco, social, env)");
         System.out.println("2. Budgets = secteurs (5 secteurs)");
-        System.out.print("Votre choix : ");
+        //System.out.print("Votre choix : ");
 
         int choix = lireEntier("Votre choix : ");
 
 
         if (choix == 1) {
-            int[] budgets = {80000, 80000, 80000};
-            SacADos sac = VersSacADos.depuisProjetSelonCouts(equipe.getProjetsEtudies(), budgets);
+
+            System.out.println("=== Définir les budgets par type de coût ===");
+
+            int bEco  = lireEntier("Budget économique : ");
+            int bSoc  = lireEntier("Budget social : ");
+            int bEnv  = lireEntier("Budget environnemental : ");
+
+            int[] budgets = {bEco, bSoc, bEnv};
+
+            SacADos sac = VersSacADos.depuisProjetSelonCouts(
+                    equipe.getProjetsEtudies(), budgets);
+
             System.out.println("➤ Instance SacADos créée (3 dimensions).");
             return sac;
         }
 
+
         else if (choix == 2) {
-            int[] budgetsSecteurs = {100000, 100000, 100000, 100000, 100000};
-            SacADos sac = VersSacADos.depuisProjetSelonSecteurs(equipe.getProjetsEtudies(), budgetsSecteurs);
+
+            System.out.println("=== Définir les budgets par secteur ===");
+
+            int bSport = lireEntier("Sport : ");
+            int bSante = lireEntier("Santé : ");
+            int bEdu   = lireEntier("Éducation : ");
+            int bCulture = lireEntier("Culture : ");
+            int bEco = lireEntier("Attractivité économique : ");
+
+            int[] budgetsSecteurs = { bSport, bSante, bEdu, bCulture, bEco };
+
+            SacADos sac = VersSacADos.depuisProjetSelonSecteurs(
+                    equipe.getProjetsEtudies(), budgetsSecteurs);
+
             System.out.println("➤ Instance SacADos créée (5 secteurs).");
             return sac;
         }
+
 
         else {
             System.out.println("⚠ Choix invalide.");
