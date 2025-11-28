@@ -1,20 +1,27 @@
 package equipe;
 
+/**
+ * Classe abstraite représentant une personne travaillant à la mairie.
+ *
+ * Elle définit les attributs communs :
+ * - nom
+ * - prénom
+ * - âge
+ *
+ * Cette classe ne peut pas être instanciée directement.
+ */
 public abstract class Personne {
 
-    // === Attributs ===
     protected String nom;
     protected String prenom;
     protected int age;
 
-    // === Constructeur === ⬅️ 确保有这个！
     public Personne(String nom, String prenom, int age) {
         this.nom = nom;
         this.prenom = prenom;
         this.age = age;
     }
 
-    // === Getters ===
     public String getNom() {
         return nom;
     }
@@ -26,9 +33,6 @@ public abstract class Personne {
     public int getAge() {
         return age;
     }
-
-    // === Méthode abstraite ===
-    public abstract void afficherRole();
 
     @Override
     public String toString() {

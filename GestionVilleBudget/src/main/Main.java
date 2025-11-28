@@ -1,83 +1,199 @@
 package main;
 
-import java.util.Arrays;
-import java.util.List;
-
-import sacADos.Objet;
-import sacADos.SacADos;
-import solveur.glouton.Comparateurs;
-import solveur.glouton.GloutonAjoutSolver;
-import solveur.glouton.GloutonRetraitSolver;
-import solveur.hillclimbing.HillClimbingSolver;
+import java.util.*;
+import equipe.*;
+import sacADos.*;
+import solveur.glouton.*;
+import solveur.hillclimbing.*;
 
 public class Main {
 
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
 
-        System.out.println("==============================================");
-        System.out.println("     Test des solveurs (Glouton + HC)");
-        System.out.println("==============================================\n");
+        EquipeMunicipale equipe = construireEquipeDemonstration();  // 创建默认团队
+        SacADos instanceSac = null;  // 用于后续 optimization
 
-        // === 1. Création des objets ===
-        Objet o1 = new Objet(10, new int[]{4, 3, 2});
-        Objet o2 = new Objet(8,  new int[]{3, 3, 3});
-        Objet o3 = new Objet(5,  new int[]{1, 10, 4});
-        Objet o4 = new Objet(7,  new int[]{2, 2, 5});
+        while (true) {
 
-        // === 2. Création du sac à dos ===
-        SacADos sac = new SacADos(
-                3,                      // dimension
-                new int[]{7, 7, 7},     // budgets
-                Arrays.asList(o1, o2, o3, o4)
-        );
+            afficherMenuPrincipal();
+            int choix = lireInt();
 
-        System.out.println("Instance du sac à dos :");
-        for (Objet o : sac.getObjets()) {
-            System.out.println("  - " + o);
+            switch (choix) {
+
+                case 1:
+                    equipe.afficherEquipe();
+                    break;
+
+                case 2:
+                    executerSimulation(equipe);
+                    break;
+
+                case 3:
+                    instanceSac = creerInstanceDepuisProjets(equipe);
+                    break;
+
+                case 4:
+                    if (instanceSac == null) {
+                        System.out.println("⚠ Vous devez d'abord créer une instance SacADos (option 3).");
+                    } else {
+                        testerSolveurs(instanceSac);
+                    }
+                    break;
+
+                case 5:
+                    if (instanceSac == null) {
+                        System.out.println("⚠ Vous devez d'abord créer une instance SacADos (option 3).");
+                    } else {
+                        testerHillClimbing(instanceSac);
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("👋 Au revoir !");
+                    return;
+
+                default:
+                    System.out.println("⚠ Choix invalide !");
+            }
         }
-        System.out.println("\nBudgets : " + Arrays.toString(sac.getBudgets()) + "\n");
+    }
 
+    // ============================
+    //       MENU PRINCIPAL
+    // ============================
+    private static void afficherMenuPrincipal() {
+        System.out.println("\n===============================");
+        System.out.println("    MENU PRINCIPAL DU PROJET");
+        System.out.println("===============================");
+        System.out.println("1. Afficher l'équipe municipale");
+        System.out.println("2. Exécuter un cycle de simulation");
+        System.out.println("3. Générer une instance SacADos depuis les projets");
+        System.out.println("4. Tester les solveurs gloutons");
+        System.out.println("5. Tester le Hill Climbing");
+        System.out.println("0. Quitter");
+        System.out.print("Votre choix : ");
+    }
 
-        // === 3. Glouton Ajout ===
-        System.out.println("===== Solveur Glouton AJOUT (critère : somme) =====");
-        GloutonAjoutSolver gAjout = new GloutonAjoutSolver();
-        List<Objet> resAjout = gAjout.resoudre(sac, Comparateurs.f_somme());
+    private static int lireInt() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Veuillez entrer un nombre valide : ");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
 
-        afficherSolution("Glouton Ajout", resAjout, sac);
+    // ============================
+    //    1) Construction équipe
+    // ============================
+    private static EquipeMunicipale construireEquipeDemonstration() {
 
+        Elu elu = new Elu("Martin", "Pierre", 45);
 
-        // === 4. Glouton Retrait ===
-        System.out.println("\n===== Solveur Glouton RETRAIT =====");
-        GloutonRetraitSolver gRetrait = new GloutonRetraitSolver();
-        List<Objet> resRetrait = gRetrait.resoudre(
-                sac,
-                Comparateurs.f_somme(),   // critère pour retirer
-                Comparateurs.f_max()      // critère pour ajout
+        List<Evaluateur> evaluateurs = List.of(
+                new Evaluateur("Dupont", "Marie", 35, TypeCout.ECONOMIQUE),
+                new Evaluateur("Durant", "Sophie", 40, TypeCout.SOCIAL),
+                new Evaluateur("Bernard", "Luc", 38, TypeCout.ENVIRONNEMENTAL)
         );
 
-        afficherSolution("Glouton Retrait", resRetrait, sac);
+        List<Expert> experts = List.of(
+                new Expert("Leroy", "Jean", 42, EnumSet.of(Secteur.SPORT, Secteur.EDUCATION)),
+                new Expert("Moreau", "Claire", 39, EnumSet.of(Secteur.SANTE, Secteur.CULTURE)),
+                new Expert("Simon", "Paul", 44, EnumSet.of(Secteur.ATTRACTIVITE_ECONOMIQUE))
+        );
 
-
-        // === 5. Hill Climbing (t = 1) ===
-        System.out.println("\n===== Hill Climbing (t = 1) =====");
-        HillClimbingSolver hc = new HillClimbingSolver();
-        List<Objet> resHC = hc.resoudre(sac, resAjout, 1, 0);
-
-        afficherSolution("Hill Climbing (t=1)", resHC, sac);
-
-
-        // === 6. Hill Climbing (t = 1 + plateaux) ===
-        System.out.println("\n===== Hill Climbing (t = 1, plateaux = 3) =====");
-        List<Objet> resHC2 = hc.resoudre(sac, resAjout, 1, 3);
-
-        afficherSolution("Hill Climbing (t=1, plateau=3)", resHC2, sac);
-
-
-        System.out.println("\n========== FIN DES TESTS ==========\n");
+        return new EquipeMunicipale(elu, evaluateurs, experts);
     }
 
 
-    /** Affichage propre des solutions */
+    // ============================
+    //     2) Simulation équipe
+    // ============================
+    private static void executerSimulation(EquipeMunicipale equipe) {
+        System.out.print("Combien de projets par expert ? ");
+        int nb = lireInt();
+
+        equipe.executerCycleSimulation(nb);
+        equipe.afficherProjets();
+    }
+
+
+    // ============================
+    //     3) Vers SacADos
+    // ============================
+    private static SacADos creerInstanceDepuisProjets(EquipeMunicipale equipe) {
+
+        if (equipe.getProjetsEtudies().isEmpty()) {
+            System.out.println("⚠ Aucun projet évalué. Lancez d'abord une simulation.");
+            return null;
+        }
+
+        System.out.println("Choisir le mode de génération de SacADos :");
+        System.out.println("1. Budgets = coûts (eco, social, env)");
+        System.out.println("2. Budgets = secteurs (5 secteurs)");
+        System.out.print("Votre choix : ");
+
+        int choix = lireInt();
+
+        if (choix == 1) {
+            int[] budgets = {80000, 80000, 80000};
+            SacADos sac = VersSacADos.depuisProjetSelonCouts(equipe.getProjetsEtudies(), budgets);
+            System.out.println("➤ Instance SacADos créée (3 dimensions).");
+            return sac;
+        }
+
+        else if (choix == 2) {
+            int[] budgetsSecteurs = {100000, 100000, 100000, 100000, 100000};
+            SacADos sac = VersSacADos.depuisProjetSelonSecteurs(equipe.getProjetsEtudies(), budgetsSecteurs);
+            System.out.println("➤ Instance SacADos créée (5 secteurs).");
+            return sac;
+        }
+
+        else {
+            System.out.println("⚠ Choix invalide.");
+            return null;
+        }
+    }
+
+
+    // ============================
+    //     4) Solveurs gloutons
+    // ============================
+    private static void testerSolveurs(SacADos sac) {
+
+        System.out.println("\n=== Solveur Glouton AJOUT ===");
+        GloutonAjoutSolver gAjout = new GloutonAjoutSolver();
+        List<Objet> s1 = gAjout.resoudre(sac, Comparateurs.f_somme());
+        afficherSolution("Glouton Ajout", s1, sac);
+
+        System.out.println("\n=== Solveur Glouton RETRAIT ===");
+        GloutonRetraitSolver gRetrait = new GloutonRetraitSolver();
+        List<Objet> s2 = gRetrait.resoudre(sac, Comparateurs.f_somme(), Comparateurs.f_max());
+        afficherSolution("Glouton Retrait", s2, sac);
+    }
+
+
+    // ============================
+    //        5) Hill Climbing
+    // ============================
+    private static void testerHillClimbing(SacADos sac) {
+
+        System.out.println("\n=== Hill Climbing ===");
+        HillClimbingSolver hc = new HillClimbingSolver();
+
+        List<Objet> solutionInitiale = new GloutonAjoutSolver()
+                .resoudre(sac, Comparateurs.f_somme());
+
+        List<Objet> solHC = hc.resoudre(sac, solutionInitiale);
+
+        afficherSolution("Hill Climbing", solHC, sac);
+    }
+
+
+    // ============================
+    //     (Utilitaire) Affichage
+    // ============================
     private static void afficherSolution(String titre, List<Objet> sol, SacADos sac) {
         System.out.println("\n--- " + titre + " ---");
         for (Objet o : sol) {

@@ -7,6 +7,8 @@ import java.util.Random;
 import sacADos.Objet;
 import sacADos.SacADos;
 
+
+
 /**
  * Implémente la méthode du Hill Climbing pour le problème
  * du sac à dos multidimensionnel.
@@ -18,6 +20,13 @@ import sacADos.SacADos;
  * </p>
  */
 public class HillClimbingSolver {
+	/**
+	 * Version simplifiée : voisinage t = 1 et plateauMoves = 0
+	 */
+	public List<Objet> resoudre(SacADos instance, List<Objet> solutionInitiale) {
+	    return resoudre(instance, solutionInitiale, 1, 0);
+	}
+
 
     private Random rnd = new Random();
 

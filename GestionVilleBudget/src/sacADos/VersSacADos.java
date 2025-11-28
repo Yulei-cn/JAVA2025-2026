@@ -1,6 +1,11 @@
 package sacADos;
 
 import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
+
+import equipe.Projet;
+import equipe.Secteur;
 import java.util.List;
 
 import equipe.Projet;
@@ -95,4 +100,74 @@ public class VersSacADos {
 
         return new SacADos(5, budgetsSecteurs, objets);
     }
+    
+    /**
+     * Lit un fichier benchmark (format Drake 2015) et construit une instance
+     * de SacADos multidimensionnel à partir de celui-ci.
+     *
+     * Format attendu :
+     * n  k  valeur_opt
+     * u1
+     * u2
+     * ...
+     * un
+     * c11 c12 ... c1n
+     * c21 c22 ... c2n
+     * ...
+     * ck1 ck2 ... ckn
+     * B1 B2 ... Bk
+     *
+     * @param chemin  chemin vers le fichier benchmark
+     * @return instance de SacADos (ou null en cas d’erreur)
+     */
+    public static SacADos depuisFichier(String chemin) {
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(chemin))) {
+
+            // ---- Ligne 1 : n objets, k budgets ----
+            String[] header = reader.readLine().trim().split("\\s+");
+            int n = Integer.parseInt(header[0]);
+            int k = Integer.parseInt(header[1]);
+
+            // ---- lire les utilités ----
+            int[] utilites = new int[n];
+            for (int i = 0; i < n; i++) {
+                utilites[i] = Integer.parseInt(reader.readLine().trim());
+            }
+
+            // ---- lire matrice des coûts (k lignes × n colonnes) ----
+            int[][] couts = new int[k][n];
+            for (int dim = 0; dim < k; dim++) {
+                String[] ligne = reader.readLine().trim().split("\\s+");
+                for (int obj = 0; obj < n; obj++) {
+                    couts[dim][obj] = Integer.parseInt(ligne[obj]);
+                }
+            }
+
+            // ---- lire budgets ----
+            String[] ligneBudgets = reader.readLine().trim().split("\\s+");
+            int[] budgets = new int[k];
+            for (int dim = 0; dim < k; dim++) {
+                budgets[dim] = Integer.parseInt(ligneBudgets[dim]);
+            }
+
+            // ---- créer la liste d’objets ----
+            List<Objet> objets = new ArrayList<>();
+
+            for (int i = 0; i < n; i++) {
+                int[] coutObjet = new int[k];
+                for (int dim = 0; dim < k; dim++)
+                    coutObjet[dim] = couts[dim][i];
+
+                objets.add(new Objet(utilites[i], coutObjet));
+            }
+
+            return new SacADos(k, budgets, objets);
+        }
+        catch (IOException e) {
+            System.err.println("Erreur de lecture du fichier : " + chemin);
+            return null;
+        }
+    }
+
 }
