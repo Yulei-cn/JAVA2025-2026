@@ -41,10 +41,26 @@ public class SacADos {
      * @param objets    liste des objets disponibles
      */
     public SacADos(int dimension, int[] budgets, List<Objet> objets) {
+
+        if (dimension <= 0) {
+            throw new IllegalArgumentException("La dimension doit être positive.");
+        }
+
+        if (budgets == null || budgets.length != dimension) {
+            throw new IllegalArgumentException(
+                "Le tableau de budgets doit avoir une taille égale à la dimension (" + dimension + ")."
+            );
+        }
+
+        if (objets == null) {
+            throw new NullPointerException("La liste des objets ne peut pas être null.");
+        }
+
         this.dimension = dimension;
         this.budgets = budgets;
         this.objets = objets;
     }
+
 
     public int getDimension() {
         return dimension;

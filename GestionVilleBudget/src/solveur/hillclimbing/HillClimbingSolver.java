@@ -40,60 +40,68 @@ public class HillClimbingSolver {
      * @return solution atteignant un optimum local
      */
     public List<Objet> resoudre(SacADos instance,
-                                List<Objet> solutionInitiale,
-                                int t,
-                                int maxPlateauMoves) {
+            List<Objet> solutionInitiale,
+            int t,
+            int maxPlateauMoves) {
 
-        List<Objet> solution = new ArrayList<>(solutionInitiale);
-        int utiliteCourante = instance.utiliteTotale(solution);
+if (solutionInitiale == null) {
+throw new NullPointerException("La solution initiale ne peut pas être null.");
+}
+if (t <= 0) {
+throw new IllegalArgumentException("Le paramètre t doit être strictement positif.");
+}
+if (maxPlateauMoves < 0) {
+throw new IllegalArgumentException("Le nombre de mouvements sur plateau doit être >= 0.");
+}
 
-        boolean amelioration = true;
+List<Objet> solution = new ArrayList<>(solutionInitiale);
+int utiliteCourante = instance.utiliteTotale(solution);
 
-        while (amelioration) {
-            amelioration = false;
+boolean amelioration = true;
 
-            List<Objet> meilleurVoisin = solution;
-            int meilleureUtilite = utiliteCourante;
+while (amelioration) {
+amelioration = false;
 
-            int plateauMoves = maxPlateauMoves;
+List<Objet> meilleurVoisin = solution;
+int meilleureUtilite = utiliteCourante;
 
-            // === Génération du voisinage (E et A de taille <= t) ===
-            for (Objet remove : instance.getObjets()) {
+int plateauMoves = maxPlateauMoves;
 
-                // essayer de retirer remove (si présent)
-                List<Objet> voisinBase = new ArrayList<>(solution);
-                voisinBase.remove(remove);
+// === Génération du voisinage ===
+for (Objet remove : instance.getObjets()) {
 
-                // essayer d'ajouter jusqu'à t objets différents
-                for (Objet add : instance.getObjets()) {
-                    if (solution.contains(add)) continue; // éviter réinsertion
+List<Objet> voisinBase = new ArrayList<>(solution);
+voisinBase.remove(remove);
 
-                    List<Objet> voisin = new ArrayList<>(voisinBase);
-                    voisin.add(add);
+for (Objet add : instance.getObjets()) {
+if (solution.contains(add)) continue;
 
-                    // admissible ?
-                    if (!instance.estAdmissible(voisin))
-                        continue;
+List<Objet> voisin = new ArrayList<>(voisinBase);
+voisin.add(add);
 
-                    int utilite = instance.utiliteTotale(voisin);
+if (!instance.estAdmissible(voisin))
+    continue;
 
-                    if (utilite > meilleureUtilite) {
-                        meilleureUtilite = utilite;
-                        meilleurVoisin = voisin;
-                        amelioration = true;
-                    }
-                    else if (utilite == meilleureUtilite && plateauMoves > 0) {
-                        plateauMoves--;
-                        meilleurVoisin = voisin;
-                        amelioration = true;
-                    }
-                }
-            }
+int utilite = instance.utiliteTotale(voisin);
 
-            solution = meilleurVoisin;
-            utiliteCourante = meilleureUtilite;
-        }
+if (utilite > meilleureUtilite) {
+    meilleureUtilite = utilite;
+    meilleurVoisin = voisin;
+    amelioration = true;
+}
+else if (utilite == meilleureUtilite && plateauMoves > 0) {
+    plateauMoves--;
+    meilleurVoisin = voisin;
+    amelioration = true;
+}
+}
+}
 
-        return solution;
-    }
+solution = meilleurVoisin;
+utiliteCourante = meilleureUtilite;
+}
+
+return solution;
+}
+
 }

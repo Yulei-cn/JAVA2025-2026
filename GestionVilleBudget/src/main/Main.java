@@ -18,7 +18,8 @@ public class Main {
         while (true) {
 
             afficherMenuPrincipal();
-            int choix = lireInt();
+            int choix = lireEntier("Votre choix : ");
+
 
             switch (choix) {
 
@@ -76,13 +77,17 @@ public class Main {
         System.out.print("Votre choix : ");
     }
 
-    private static int lireInt() {
-        while (!scanner.hasNextInt()) {
-            System.out.print("Veuillez entrer un nombre valide : ");
-            scanner.next();
+    private static int lireEntier(String msg) {
+        while (true) {
+            try {
+                System.out.print(msg);
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("⚠️ Entrée invalide. Veuillez entrer un nombre entier.");
+            }
         }
-        return scanner.nextInt();
     }
+
 
     // ============================
     //    1) Construction équipe
@@ -111,12 +116,11 @@ public class Main {
     //     2) Simulation équipe
     // ============================
     private static void executerSimulation(EquipeMunicipale equipe) {
-        System.out.print("Combien de projets par expert ? ");
-        int nb = lireInt();
-
+        int nb = lireEntier("Combien de projets par expert ? ");
         equipe.executerCycleSimulation(nb);
         equipe.afficherProjets();
     }
+
 
 
     // ============================
@@ -134,7 +138,8 @@ public class Main {
         System.out.println("2. Budgets = secteurs (5 secteurs)");
         System.out.print("Votre choix : ");
 
-        int choix = lireInt();
+        int choix = lireEntier("Votre choix : ");
+
 
         if (choix == 1) {
             int[] budgets = {80000, 80000, 80000};
