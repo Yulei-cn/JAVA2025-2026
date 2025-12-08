@@ -76,6 +76,15 @@ public class Main {
         System.out.println("0. Quitter");
         //System.out.print("Votre choix : ");
     }
+    
+    private static int lireChoixSousMenu(String msg) {
+        while (true) {
+            int x = lireEntier(msg);
+            if (x >= 0) return x;   // 0 = retour
+            System.out.println("⚠ Choix invalide.");
+        }
+    }
+
 
     private static int lireEntier(String msg) {
         while (true) {
@@ -136,54 +145,39 @@ public class Main {
         System.out.println("Choisir le mode de génération de SacADos :");
         System.out.println("1. Budgets = coûts (eco, social, env)");
         System.out.println("2. Budgets = secteurs (5 secteurs)");
-        //System.out.print("Votre choix : ");
+        System.out.println("0. Retour au menu principal");
 
-        int choix = lireEntier("Votre choix : ");
-
+        int choix = lireChoixSousMenu("Votre choix : ");
+        if (choix == 0) return null;   // ★ 返回主菜单
 
         if (choix == 1) {
-
             System.out.println("=== Définir les budgets par type de coût ===");
+            int bEco = lireEntier("Budget économique : ");
+            int bSoc = lireEntier("Budget social : ");
+            int bEnv = lireEntier("Budget environnemental : ");
 
-            int bEco  = lireEntier("Budget économique : ");
-            int bSoc  = lireEntier("Budget social : ");
-            int bEnv  = lireEntier("Budget environnemental : ");
-
-            int[] budgets = {bEco, bSoc, bEnv};
-
-            SacADos sac = VersSacADos.depuisProjetSelonCouts(
-                    equipe.getProjetsEtudies(), budgets);
-
+            int[] budgets = { bEco, bSoc, bEnv };
             System.out.println("➤ Instance SacADos créée (3 dimensions).");
-            return sac;
+            return VersSacADos.depuisProjetSelonCouts(equipe.getProjetsEtudies(), budgets);
         }
 
-
-        else if (choix == 2) {
-
+        if (choix == 2) {
             System.out.println("=== Définir les budgets par secteur ===");
-
             int bSport = lireEntier("Sport : ");
             int bSante = lireEntier("Santé : ");
-            int bEdu   = lireEntier("Éducation : ");
+            int bEdu = lireEntier("Éducation : ");
             int bCulture = lireEntier("Culture : ");
             int bEco = lireEntier("Attractivité économique : ");
 
-            int[] budgetsSecteurs = { bSport, bSante, bEdu, bCulture, bEco };
-
-            SacADos sac = VersSacADos.depuisProjetSelonSecteurs(
-                    equipe.getProjetsEtudies(), budgetsSecteurs);
-
+            int[] budgets = { bSport, bSante, bEdu, bCulture, bEco };
             System.out.println("➤ Instance SacADos créée (5 secteurs).");
-            return sac;
+            return VersSacADos.depuisProjetSelonSecteurs(equipe.getProjetsEtudies(), budgets);
         }
 
-
-        else {
-            System.out.println("⚠ Choix invalide.");
-            return null;
-        }
+        System.out.println("⚠ Choix invalide.");
+        return null;
     }
+
 
 
     // ============================
@@ -191,16 +185,32 @@ public class Main {
     // ============================
     private static void testerSolveurs(SacADos sac) {
 
-        System.out.println("\n=== Solveur Glouton AJOUT ===");
-        GloutonAjoutSolver gAjout = new GloutonAjoutSolver();
-        List<Objet> s1 = gAjout.resoudre(sac, Comparateurs.f_somme());
-        afficherSolution("Glouton Ajout", s1, sac);
+        while (true) {
 
-        System.out.println("\n=== Solveur Glouton RETRAIT ===");
-        GloutonRetraitSolver gRetrait = new GloutonRetraitSolver();
-        List<Objet> s2 = gRetrait.resoudre(sac, Comparateurs.f_somme(), Comparateurs.f_max());
-        afficherSolution("Glouton Retrait", s2, sac);
+            System.out.println("\n=== Tester les solveurs gloutons ===");
+            System.out.println("1. Glouton Ajout");
+            System.out.println("2. Glouton Retrait");
+            System.out.println("3. Les deux");
+            System.out.println("0. Retour");
+            int choix = lireChoixSousMenu("Votre choix : ");
+
+            if (choix == 0) return;  // ★ 返回主菜单
+
+            if (choix == 1 || choix == 3) {
+                System.out.println("\n=== Solveur Glouton AJOUT ===");
+                GloutonAjoutSolver g1 = new GloutonAjoutSolver();
+                afficherSolution("Glouton Ajout", g1.resoudre(sac, Comparateurs.f_somme()), sac);
+            }
+
+            if (choix == 2 || choix == 3) {
+                System.out.println("\n=== Solveur Glouton RETRAIT ===");
+                GloutonRetraitSolver g2 = new GloutonRetraitSolver();
+                afficherSolution("Glouton Retrait",
+                        g2.resoudre(sac, Comparateurs.f_somme(), Comparateurs.f_max()), sac);
+            }
+        }
     }
+
 
 
     // ============================
@@ -208,16 +218,29 @@ public class Main {
     // ============================
     private static void testerHillClimbing(SacADos sac) {
 
-        System.out.println("\n=== Hill Climbing ===");
-        HillClimbingSolver hc = new HillClimbingSolver();
+        while (true) {
+            System.out.println("\n=== Tester le Hill Climbing ===");
+            System.out.println("1. HC standard (t = 1)");
+            System.out.println("2. HC avec plateau (t = 1, plateau = 3)");
+            System.out.println("0. Retour");
 
-        List<Objet> solutionInitiale = new GloutonAjoutSolver()
-                .resoudre(sac, Comparateurs.f_somme());
+            int choix = lireChoixSousMenu("Votre choix : ");
+            if (choix == 0) return;
 
-        List<Objet> solHC = hc.resoudre(sac, solutionInitiale);
+            List<Objet> init = new GloutonAjoutSolver().resoudre(sac, Comparateurs.f_somme());
+            HillClimbingSolver hc = new HillClimbingSolver();
 
-        afficherSolution("Hill Climbing", solHC, sac);
+            if (choix == 1) {
+                afficherSolution("Hill Climbing (t=1)", hc.resoudre(sac, init), sac);
+            }
+
+            if (choix == 2) {
+                afficherSolution("Hill Climbing (plateau=3)",
+                        hc.resoudre(sac, init, 1, 3), sac);
+            }
+        }
     }
+
 
 
     // ============================

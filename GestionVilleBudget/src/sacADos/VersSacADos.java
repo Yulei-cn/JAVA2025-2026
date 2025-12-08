@@ -68,11 +68,14 @@ public class VersSacADos {
 	            p.getCoutSocial(),
 	            p.getCoutEnvironnemental()
 	        };
-	        objets.add(new Objet(p.getBenefice(), couts));
+
+	        // 🔥 IMPORTANT : on ajoute le label (titre du projet)
+	        objets.add(new Objet(p.getTitre(), p.getBenefice(), couts));
 	    }
 
 	    return new SacADos(3, budgets, objets);
 	}
+
 
     /**
      * Convertit une liste de projets en sac à dos multidimensionnel,
@@ -107,11 +110,13 @@ public class VersSacADos {
 	        int[] couts = new int[5];
 	        couts[p.getSecteur().ordinal()] = p.getCoutEconomique();
 
-	        objets.add(new Objet(p.getBenefice(), couts));
+	        // 🔥 IMPORTANT : inclure aussi le titre !
+	        objets.add(new Objet(p.getTitre(), p.getBenefice(), couts));
 	    }
 
 	    return new SacADos(5, budgetsSecteurs, objets);
 	}
+
 
     
     /**

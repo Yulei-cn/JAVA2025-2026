@@ -3,65 +3,36 @@ package sacADos;
 import java.util.Arrays;
 
 /**
- * Classe représentant un objet pour le problème du sac à dos multidimensionnel.
- *
- * <p>
- * Chaque objet est caractérisé par :
- * <ul>
- *   <li>Une utilité (ou valeur)</li>
- *   <li>Un tableau de coûts, où chaque case correspond à une dimension</li>
- * </ul>
- * </p>
- *
- * <p>
- * Cette classe est utilisée dans les algorithmes de résolution gloutons et dynamiques
- * du problème du sac à dos (référence : travaux pratiques TP7/TP8 de programmation Java).
- * </p>
- *
- * @author Vous
- * @version 1.0
+ * Objet utilisé dans le sac-à-dos multidimensionnel.
+ * Peut contenir un label (nom du projet) pour l'affichage.
  */
 public class Objet {
 
-    /** Utilité (ou valeur) de l'objet */
+    private String label;   // nom du projet (facultatif)
     private int utilite;
-
-    /** Coûts multidimensionnels de l'objet */
     private int[] couts;
 
-    /**
-     * Construit un nouvel objet multidimensionnel.
-     *
-     * @param utilite  l'utilité (doit être positive)
-     * @param couts    le tableau de coûts selon chaque dimension (aucune case ne doit être négative)
-     */
+    /** Constructeur sans label (ancienne version) */
     public Objet(int utilite, int[] couts) {
+        this.utilite = utilite;
+        this.couts = couts;
+        this.label = "Objet";   // valeur par défaut
+    }
+
+    /** Constructeur avec label (nouvelle version) */
+    public Objet(String label, int utilite, int[] couts) {
+        this.label = label;
         this.utilite = utilite;
         this.couts = couts;
     }
 
-    /**
-     * Retourne l'utilité de l'objet.
-     *
-     * @return utilité de l'objet
-     */
-    public int getUtilite() {
-        return utilite;
-    }
-
-    /**
-     * Retourne les coûts multidimensionnels de l'objet.
-     *
-     * @return tableau des coûts
-     */
-    public int[] getCouts() {
-        return couts;
-    }
+    public String getLabel() { return label; }
+    public int getUtilite() { return utilite; }
+    public int[] getCouts() { return couts; }
 
     @Override
     public String toString() {
-        return "Objet{ utilite=" + utilite +
-                ", couts=" + Arrays.toString(couts) +
-                " }";
+        return label + " { utilite=" + utilite +
+                ", couts=" + Arrays.toString(couts) + " }";
     }
 }
