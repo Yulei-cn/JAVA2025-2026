@@ -9,7 +9,7 @@ import java.util.Map;
  * Représente l'équipe municipale de Dauphine City.
  *
  * Cette classe implémente strictement les exigences du projet :
- * - 1 élu(e)
+ * - 1 élu
  * - 3 évaluateurs (un par type de coût)
  * - une liste d'experts
  * - un cycle de simulation permettant de générer et d'évaluer des projets
@@ -37,7 +37,7 @@ public class EquipeMunicipale {
     /**
      * Construit une équipe municipale complète.
      *
-     * @param elu élu(e) unique
+     * @param elu élu unique
      * @param listeEvaluateurs liste contenant exactement 3 évaluateurs
      * @param experts liste des experts
      */
