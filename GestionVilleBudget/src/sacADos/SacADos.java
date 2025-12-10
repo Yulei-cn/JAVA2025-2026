@@ -5,22 +5,14 @@ import java.util.List;
 /**
  * Représente un sac à dos multidimensionnel utilisé pour la sélection optimale d’objets.
  *
- * <p>
  * Le sac à dos est défini par :
- * <ul>
- *   <li>une dimension k (nombre de contraintes ou budgets)</li>
- *   <li>un tableau de budgets, un par dimension</li>
- *   <li>une liste d’objets pouvant être sélectionnés</li>
- * </ul>
- * </p>
+ *   une dimension k (nombre de contraintes ou budgets)
+ *   un tableau de budgets, un par dimension
+ *   une liste d’objets pouvant être sélectionnés
  *
- * <p>
  * Il fournit des méthodes permettant :
- * <ul>
- *   <li>de vérifier si une sélection respecte les contraintes</li>
- *   <li>de calculer l’utilité totale d’une sélection</li>
- * </ul>
- * </p>
+ *   de vérifier si une sélection respecte les contraintes
+ *   de calculer l’utilité totale d’une sélection
  */
 public class SacADos {
 
