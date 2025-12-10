@@ -3,19 +3,15 @@ package equipe;
 /**
  * Représente un projet municipal proposé par un expert.
  *
- * <p>
- * ⚠️ Améliorations pédagogiques intégrées :
- * <ul>
- *     <li><b>TP7</b> : exceptions si tentative d'accès à un projet incomplet</li>
- *     <li><b>TP8</b> : ajout de méthodes utilitaires facilitant l'usage de comparateurs</li>
- *     <li><b>TP9</b> : ajout d'une classe interne permettant de stocker l’état du projet</li>
- * </ul>
- * </p>
+ * Améliorations pédagogiques intégrées :
+ *     TP7 : exceptions si tentative d'accès à un projet incomplet</li>
+ *     TP8 : ajout de méthodes utilitaires facilitant l'usage de comparateurs</li>
+ *     TP9 : ajout d'une classe interne permettant de stocker l’état du projet</li>
  *
- * <p>Un projet n'est considéré comme complet que lorsque tous ses coûts et son
- * bénéfice ont été évalués.</p>
+ * Un projet n'est considéré comme complet que lorsque tous ses coûts et son
+ * bénéfice ont été évalués.
  *
- * @author …
+ * @author Yulei
  * @version 2.0
  */
 public class Projet {
@@ -31,7 +27,7 @@ public class Projet {
 
     /**
      * Petite classe interne enregistrant l’état complet du projet.
-     * <p><b>(TP9 — classes internes)</b></p>
+     * (TP9 — classes internes)
      */
     public static class EtatProjet {
         public final int benefice;
@@ -91,8 +87,8 @@ public class Projet {
     /**
      * Retourne un état complet du projet.
      *
-     * <p><b>(TP7)</b> : exception si projet incomplet.<br>
-     * <b>(TP9)</b> : retour d’une classe interne.</p>
+     * (TP7) : exception si projet incomplet.
+     * (TP9) : retour d’une classe interne.
      *
      * @return l’état complet du projet
      */
@@ -117,7 +113,7 @@ public class Projet {
 
     /**
      * Retourne une version simplifiée pour les solveurs.
-     * <p><b>(TP8)</b> : utile pour les comparateurs et le sac à dos.</p>
+     * (TP8) : utile pour les comparateurs et le sac à dos.
      */
     public int coutTotal() {
         if (!estComplet())
