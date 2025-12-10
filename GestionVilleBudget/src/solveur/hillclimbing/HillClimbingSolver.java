@@ -13,11 +13,9 @@ import sacADos.SacADos;
  * Implémente la méthode du Hill Climbing pour le problème
  * du sac à dos multidimensionnel.
  *
- * <p>
  * Le voisinage est défini par :
  * S' = (S \ E) ∪ A
  * avec |E| ≤ t et |A| ≤ t.
- * </p>
  */
 public class HillClimbingSolver {
 	/**
