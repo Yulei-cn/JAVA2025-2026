@@ -12,8 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        EquipeMunicipale equipe = construireEquipeDemonstration();  // 创建默认团队
-        SacADos instanceSac = null;  // 用于后续 optimization
+        EquipeMunicipale equipe = construireEquipeDemonstration();  // Créer l'équipe par défaut
+        SacADos instanceSac = null;  // Utilisé pour l’optimisation ultérieure
 
         while (true) {
 
@@ -52,7 +52,7 @@ public class Main {
                     break;
 
                 case 0:
-                    System.out.println("👋 Au revoir !");
+                    System.out.println("Au revoir !");
                     return;
 
                 default:
@@ -92,7 +92,7 @@ public class Main {
                 System.out.print(msg);
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("⚠️ Entrée invalide. Veuillez entrer un nombre entier.");
+                System.out.println("Entrée invalide. Veuillez entrer un nombre entier.");
             }
         }
     }
@@ -148,7 +148,7 @@ public class Main {
         System.out.println("0. Retour au menu principal");
 
         int choix = lireChoixSousMenu("Votre choix : ");
-        if (choix == 0) return null;   // ★ 返回主菜单
+        if (choix == 0) return null;   // Retourner au menu principal
 
         if (choix == 1) {
             System.out.println("=== Définir les budgets par type de coût ===");
@@ -194,7 +194,7 @@ public class Main {
             System.out.println("0. Retour");
             int choix = lireChoixSousMenu("Votre choix : ");
 
-            if (choix == 0) return;  // ★ 返回主菜单
+            if (choix == 0) return;  // Retourner au menu principal
 
             if (choix == 1 || choix == 3) {
                 System.out.println("\n=== Solveur Glouton AJOUT ===");
