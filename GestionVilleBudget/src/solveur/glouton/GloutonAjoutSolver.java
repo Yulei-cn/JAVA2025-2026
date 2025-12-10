@@ -10,18 +10,12 @@ import sacADos.SacADos;
 /**
  * Implémente une méthode gloutonne « à ajout ».
  *
- * <p>
  * Les objets sont triés selon un critère (fournit via un {@link Comparator}),
  * puis considérés un par un :
- * <ul>
- *   <li>si l’objet peut être ajouté sans dépasser les budgets → il est gardé</li>
- *   <li>sinon → il est ignoré</li>
- * </ul>
- * </p>
+ *   si l’objet peut être ajouté sans dépasser les budgets → il est gardé
+ *   sinon → il est ignoré
  *
- * <p>
  * Cette approche fournit une solution admissible rapide, mais pas nécessairement optimale.
- * </p>
  */
 public class GloutonAjoutSolver {
 
