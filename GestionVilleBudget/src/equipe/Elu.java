@@ -1,7 +1,7 @@
 package equipe;
 
 /**
- * Représente l'élu(e) de la municipalité.
+ * Représente l'élu de la municipalité.
  *
  * L'élu :
  *  - est une Personne (classe abstraite)
