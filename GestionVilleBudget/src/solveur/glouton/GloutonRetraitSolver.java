@@ -10,20 +10,14 @@ import sacADos.SacADos;
 /**
  * Méthode gloutonne « à retrait ».
  *
- * <p>
  * Étapes :
- * <ol>
- *   <li>On part de S = O (sélection complète)</li>
- *   <li>On retire les objets du moins intéressant au plus intéressant
- *       jusqu’à retrouver l’admissibilité</li>
- *   <li>Une fois admissible, on tente de réajouter des objets avec
- *       une méthode gloutonne « à ajout »</li>
- * </ol>
- * </p>
+ *   On part de S = O (sélection complète)
+ *   On retire les objets du moins intéressant au plus intéressant
+ *       jusqu’à retrouver l’admissibilité
+ *   Une fois admissible, on tente de réajouter des objets avec
+ *       une méthode gloutonne « à ajout »
  *
- * <p>
  * Cette méthode combine un nettoyage (retrait) puis une amélioration (ajout).
- * </p>
  */
 public class GloutonRetraitSolver {
 
