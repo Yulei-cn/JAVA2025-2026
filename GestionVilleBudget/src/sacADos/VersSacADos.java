@@ -14,18 +14,12 @@ import equipe.Projet;
  * Classe utilitaire permettant de convertir une liste de projets
  * en une instance de {@link SacADos}, selon différents critères.
  *
- * <p>
  * Deux modes de conversion sont fournis :
- * <ul>
- *   <li>Conversion selon les trois types de coûts (économique, social, environnemental)</li>
- *   <li>Conversion selon les secteurs d’activité</li>
- * </ul>
- * </p>
+ *   Conversion selon les trois types de coûts (économique, social, environnemental)
+ *   Conversion selon les secteurs d’activité
  *
- * <p>
  * Cette classe ne modifie pas les projets : elle produit simplement une
  * représentation compatible avec les solveurs du sac à dos multidimensionnel.
- * </p>
  */
 public class VersSacADos {
 
@@ -33,19 +27,13 @@ public class VersSacADos {
      * Convertit une liste de projets en sac à dos multidimensionnel
      * où chaque dimension correspond à un type de coût :
      *
-     * <ul>
-     *   <li>coût économique</li>
-     *   <li>coût social</li>
-     *   <li>coût environnemental</li>
-     * </ul>
+     *   coût économique
+     *   coût social
+     *   coût environnemental
      *
-     * <p>
      * Pour chaque projet :
-     * <ul>
-     *   <li>l'utilité de l'objet est le bénéfice du projet</li>
-     *   <li>les coûts sont placés dans un tableau à 3 cases</li>
-     * </ul>
-     * </p>
+     *   l'utilité de l'objet est le bénéfice du projet
+     *   les coûts sont placés dans un tableau à 3 cases
      *
      * @param projets  liste des projets évalués
      * @param budgets  budgets disponibles pour chaque type de coût (taille 3)
@@ -81,14 +69,10 @@ public class VersSacADos {
      * Convertit une liste de projets en sac à dos multidimensionnel,
      * où chaque dimension correspond à un secteur d’activité.
      *
-     * <p>
      * Dimension = nombre de secteurs connus (fixé à 5 dans ce projet).
-     * </p>
      *
-     * <p>
      * Chaque projet ne consomme du budget que dans SON propre secteur.
      * On n'utilise ici que le coût économique du projet.
-     * </p>
      *
      * @param projets          liste des projets
      * @param budgetsSecteurs  budgets associés à chaque secteur (taille 5)
@@ -110,7 +94,7 @@ public class VersSacADos {
 	        int[] couts = new int[5];
 	        couts[p.getSecteur().ordinal()] = p.getCoutEconomique();
 
-	        // 🔥 IMPORTANT : inclure aussi le titre !
+	        // IMPORTANT : inclure aussi le titre !
 	        objets.add(new Objet(p.getTitre(), p.getBenefice(), couts));
 	    }
 
