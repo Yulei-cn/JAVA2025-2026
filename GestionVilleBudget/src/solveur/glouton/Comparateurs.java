@@ -10,21 +10,17 @@ import sacADos.Objet;
  * selon des critères gloutons pour la sélection dans un sac à dos
  * multidimensionnel.
  *
- * <p>
  * Chaque méthode retourne un {@link Comparator} permettant d’ordonner
  * une liste d’objets selon un critère d’efficacité :
- * <ul>
- *   <li>utilité / somme des coûts</li>
- *   <li>utilité / coût maximal</li>
- *   <li>utilité / coût dans la dimension la plus en dépassement</li>
- * </ul>
- * </p>
+ *   utilité / somme des coûts
+ *   utilité / coût maximal
+ *   utilité / coût dans la dimension la plus en dépassement
  */
 public class Comparateurs {
 
     /**
      * Critère glouton : f(oi) = utilité / somme des coûts.
-     * <p>Tri décroissant : les objets les plus « rentables » en premier.</p>
+     * Tri décroissant : les objets les plus « rentables » en premier.
      *
      * @return comparateur basé sur l’efficacité globale
      */
@@ -38,7 +34,7 @@ public class Comparateurs {
 
     /**
      * Critère glouton : fmax(oi) = utilité / coût maximal.
-     * <p>Favorise les objets dont la contrainte la plus restrictive est « peu coûteuse ».</p>
+     * Favorise les objets dont la contrainte la plus restrictive est « peu coûteuse ».
      *
      * @return comparateur basé sur le coût maximal
      */
@@ -53,11 +49,9 @@ public class Comparateurs {
     /**
      * Critère fmv : utilité / coût dans la dimension la plus en dépassement.
      *
-     * <p>
      * Ce critère prend en compte l’état actuel d’une sélection d’objets
      * afin de privilégier des objets qui n’aggravent pas la dimension
      * déjà la plus critique.
-     * </p>
      *
      * @param budgets    budgets disponibles dans chaque dimension
      * @param selection  objets déjà sélectionnés
