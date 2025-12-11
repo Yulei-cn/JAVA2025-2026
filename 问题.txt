@@ -1,0 +1,162 @@
+❌ 【问题 1】你的类没有按照 Javadoc 标准撰写文档
+
+课件要求：
+
+✔ 每个 class 要有：
+
+第一行是总结性一句话
+
+@author
+
+@version
+
+你的类（SacADos, Objet, ÉquipeMunicipale, Solveurs…）：
+
+🚫 大多数没有 @author
+🚫 大多数没有 @version
+🚫 文档第一句话不是总结句子
+🚫 有的类重复写了两个 toString()（Objet）
+🚫 有些类完全没有 Javadoc（HillClimbingSolver, GloutonRetraitSolver）
+
+🔍 课件第 3–7 页完全要求这些
+➡️ 老师会扣 Documentation 分数（5–20%）
+
+❌ 【问题 2】你的 Javadoc 方法注释不符合课件规范
+
+课件要求每个方法都写：
+
+描述
+
+@param
+
+@return
+
+@throws（若有例外）
+
+你的项目中：
+
+🚫 大部分 public 方法没有 @param 字段
+🚫 Solver 关键方法缺少文档（resoudre(...)）
+🚫 Main 里面所有方法都没有 Javadoc（会被扣分）
+
+比如：
+
+public List<Objet> resoudre(SacADos sac, Comparator<Objet> comp)
+
+
+课件要求写成：
+
+/**
+ * Résout le problème du sac à dos en utilisant un algorithme glouton.
+ *
+ * @param sac  l'instance de sac à dos contenant budgets + objets
+ * @param comp comparateur définissant l'ordre de sélection
+ * @return la liste d’objets choisis (admissible)
+ */
+
+❌ 【问题 3】缺少 package-info.java
+
+课件第 9–10 页要求：
+
+每个 package 都必须包含一个 package-info.java 来描述该包。
+
+⚠️ 你的项目中 6 个 package：
+
+equipe
+
+sacADos
+
+solveur
+
+solveur.glouton
+
+solveur.hillclimbing
+
+main
+
+全部都 没有 package-info.java。
+
+👉 这在老师评分里是“Javadoc completeness”部分，会扣分。
+
+❌ 【问题 4】JUnit 测试结构不符合课件要求
+
+课件要求：
+
+每个类对应一个 Test 类
+
+例如：
+
+类名	测试类名
+Objet	ObjetTest
+SacADos	SacADosTest
+GloutonAjoutSolver	GloutonAjoutSolverTest
+GloutonRetraitSolver	GloutonRetraitSolverTest
+HillClimbingSolver	HillClimbingSolverTest
+
+但你现在：
+
+🚫 只有极少数的 test 文件
+🚫 test 中没有使用 @BeforeEach
+🚫 也没有 assert* 系列测试覆盖多种情况
+🚫 测试方法命名不符合课件最后一页的命名规范
+
+例如：
+
+课件建议命名格式：
+
+methodeTestee_Contexte_ResultatAttendu
+
+
+你的测试：
+
+testGloutonAjout()
+
+
+➡️ 不符合命名规则
+
+❌ 【问题 5】一些注解必要时没有用 @Override
+
+课件明确说：
+
+使用 @Override 是“良好实践”
+
+你的类：
+
+Evaluateur
+
+Expert
+
+Elu
+
+其他 override 项
+
+很多方法缺少：
+
+@Override
+public void afficherRole() { … }
+
+❌ 【问题 6】Objet 类出现了严重结构错误
+
+你写了两个构造函数 + 两个 toString：
+
+public Objet(int utilite, int[] couts) { ... }
+
+public Objet(String label, int utilite, int[] couts) { ... }
+
+@Override
+public String toString() { ... }
+@Override
+public String toString() { ... } // 重复
+
+
+⚠️ 这会导致编译器报错／行为异常
+⚠️ 不符合课件中“清晰文档 + 清晰结构”的要求
+⚠️ 你想使用 label 但却在 SacADos 转换时没传 label（错误）
+
+❌ 【问题 7】没有使用 @Deprecated / @See / @since（非必须但课件提到）
+
+不是必须，但如果你使用会：
+
+✔ 提升文档质量
+✔ 得到加分
+✔ 显示你理解课程内容

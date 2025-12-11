@@ -6,40 +6,61 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Représente l'équipe municipale de Dauphine City.
+ * Gère l’ensemble des acteurs municipaux impliqués dans la création
+ * et l'évaluation des projets de Dauphine City.
  *
- * Cette classe implémente strictement les exigences du projet :
- * - 1 élu
- * - 3 évaluateurs (un par type de coût)
- * - une liste d'experts
- * - un cycle de simulation permettant de générer et d'évaluer des projets
+ * <p>
+ * Une équipe municipale est composée de :
+ * <ul>
+ *     <li>1 élu chargé d’évaluer le bénéfice</li>
+ *     <li>3 évaluateurs spécialisés (économique, social, environnemental)</li>
+ *     <li>plusieurs experts capables de proposer des projets</li>
+ * </ul>
+ * Les projets proposés sont évalués et, lorsqu’ils sont complets, ajoutés
+ * à la liste des projets étudiés.
+ * </p>
  *
- * Aucun ajout inutile : pas de logs, pas de comparateurs, pas de tri.
+ * <p>
+ * Cette classe illustre l’utilisation conjointe :
+ * <ul>
+ *     <li>d’une classe abstraite {@link Personne}</li>
+ *     <li>d’objets spécialisés (Élu, Évaluateur, Expert)</li>
+ *     <li>d’un cycle de simulation orchestrant la collaboration entre rôles</li>
+ * </ul>
+ * </p>
  *
- * Cette classe illustre l'utilisation :
- * - d'une classe abstraite (Personne)
- * - d'interfaces comme contrat (ProposeProjet, EvalueCout, EvalueBenefice)
+ * @author Yulei
+ * @version 2.0
+ * @since 1.0
  */
 public class EquipeMunicipale {
 
-    /** L'élu(e) de la municipalité (contrat : EvalueBenefice) */
+    /** L'élu chargé d’attribuer un bénéfice aux projets */
     private final Elu elu;
 
-    /** Les trois évaluateurs, indexés par leur type de coût */
+    /** Trois évaluateurs indexés par leur type de coût */
     private final Map<TypeCout, Evaluateur> evaluateurs;
 
     /** Liste des experts capables de proposer des projets */
     private final List<Expert> experts;
 
-    /** Projets complètement évalués */
+    /** Projets complètement évalués et validés */
     private final List<Projet> projetsEtudies;
 
     /**
-     * Construit une équipe municipale complète.
+     * Construit une équipe municipale complète, comprenant :
+     * <ul>
+     *     <li>un élu unique</li>
+     *     <li>exactement trois évaluateurs spécialisés</li>
+     *     <li>une liste d'experts</li>
+     * </ul>
      *
-     * @param elu élu unique
-     * @param listeEvaluateurs liste contenant exactement 3 évaluateurs
-     * @param experts liste des experts
+     * @param elu               élu unique de la municipalité
+     * @param listeEvaluateurs  liste contenant exactement trois évaluateurs
+     * @param experts           liste des experts municipaux
+     *
+     * @throws IllegalArgumentException si un des rôles est absent
+     * @throws IllegalArgumentException si deux évaluateurs partagent la même spécialisation
      */
     public EquipeMunicipale(Elu elu, List<Evaluateur> listeEvaluateurs, List<Expert> experts) {
 
@@ -66,26 +87,31 @@ public class EquipeMunicipale {
             this.evaluateurs.put(t, eval);
         }
 
-        // Vérification que tous les types sont couverts
-        if (!evaluateurs.containsKey(TypeCout.ECONOMIQUE) ||
-            !evaluateurs.containsKey(TypeCout.SOCIAL) ||
-            !evaluateurs.containsKey(TypeCout.ENVIRONNEMENTAL)) {
+        // Vérification que tous les types de coûts sont présents
+        if (!evaluateurs.containsKey(TypeCout.ECONOMIQUE)
+                || !evaluateurs.containsKey(TypeCout.SOCIAL)
+                || !evaluateurs.containsKey(TypeCout.ENVIRONNEMENTAL)) {
             throw new IllegalArgumentException("Les trois types de coûts doivent être représentés.");
         }
     }
 
     // ==========================================================
-    //                     MÉTHODE PRINCIPALE
+    //                 MÉTHODE PRINCIPALE DE SIMULATION
     // ==========================================================
 
     /**
      * Exécute un cycle complet de simulation :
-     * 1) Les experts proposent les projets
-     * 2) Les évaluateurs évaluent les coûts
-     * 3) L'élu attribue le bénéfice
-     * 4) Les projets complets sont ajoutés à projetsEtudies
+     * <ol>
+     *     <li>Chaque expert propose des projets</li>
+     *     <li>Chaque évaluateur attribue son coût</li>
+     *     <li>L’élu attribue un bénéfice</li>
+     *     <li>Les projets entièrement évalués sont ajoutés aux projets étudiés</li>
+     * </ol>
      *
      * @param nbProjetsParExpert nombre de projets proposés par expert
+     *
+     * @throws IllegalArgumentException si nbProjetsParExpert ≤ 0
+     * @throws IllegalStateException si aucun expert n'est présent
      */
     public void executerCycleSimulation(int nbProjetsParExpert) {
 
@@ -102,7 +128,7 @@ public class EquipeMunicipale {
             nouveauxProjets.addAll(expert.proposerProjets(nbProjetsParExpert));
         }
 
-        // 2 — Évaluation des coûts + 3 — Évaluation du bénéfice
+        // 2 + 3 — Évaluations
         for (Projet p : nouveauxProjets) {
 
             // Évaluateurs
@@ -121,10 +147,12 @@ public class EquipeMunicipale {
     }
 
     // ==========================================================
-    //                        AFFICHAGES
+    //                           AFFICHAGE
     // ==========================================================
 
-    /** Affiche les membres de l'équipe */
+    /**
+     * Affiche les membres de l'équipe municipale.
+     */
     public void afficherEquipe() {
         System.out.println("\n===== Équipe municipale =====");
         System.out.println("[ÉLU]      " + elu);
@@ -138,7 +166,9 @@ public class EquipeMunicipale {
         for (Expert ex : experts) System.out.println("  - " + ex);
     }
 
-    /** Affiche les projets étudiés */
+    /**
+     * Affiche la liste des projets entièrement étudiés.
+     */
     public void afficherProjets() {
         System.out.println("\n===== Projets étudiés =====");
         if (projetsEtudies.isEmpty()) {
@@ -152,21 +182,25 @@ public class EquipeMunicipale {
     }
 
     // ==========================================================
-    //                    GETTERS (lecture seule)
+    //                          GETTERS
     // ==========================================================
 
+    /** @return l’élu municipal */
     public Elu getElu() {
         return elu;
     }
 
+    /** @return la liste des experts (lecture seule) */
     public List<Expert> getExperts() {
         return List.copyOf(experts);
     }
 
+    /** @return les évaluateurs indexés par type de coût (lecture seule) */
     public Map<TypeCout, Evaluateur> getEvaluateurs() {
         return Map.copyOf(evaluateurs);
     }
 
+    /** @return la liste des projets étudiés (lecture seule) */
     public List<Projet> getProjetsEtudies() {
         return List.copyOf(projetsEtudies);
     }

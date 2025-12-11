@@ -8,71 +8,76 @@ import sacADos.Objet;
 import sacADos.SacADos;
 
 /**
- * Méthode gloutonne « à retrait ».
+ * Implémente la méthode gloutonne « à retrait ».
  *
- * Étapes :
- *   On part de S = O (sélection complète)
- *   On retire les objets du moins intéressant au plus intéressant
- *       jusqu’à retrouver l’admissibilité
- *   Une fois admissible, on tente de réajouter des objets avec
- *       une méthode gloutonne « à ajout »
+ * <p>
+ * Principe général :
+ * <ul>
+ *   <li>On part de la sélection complète S = O</li>
+ *   <li>On retire les objets du moins intéressant au plus intéressant
+ *       jusqu'à ce que la solution devienne admissible</li>
+ *   <li>Une fois admissible, on tente d'améliorer la solution via une phase
+ *       d’ajout utilisant un second comparateur</li>
+ * </ul>
+ * </p>
  *
- * Cette méthode combine un nettoyage (retrait) puis une amélioration (ajout).
+ * <p>Cette méthode combine un nettoyage (retrait) puis une optimisation locale (ajout).</p>
+ *
+ * @author ZHU YULEI
+ * @version 2.0
  */
 public class GloutonRetraitSolver {
 
     /**
-     * Résout le sac à dos multidimensionnel via une approche « à retrait ».
+     * Applique l’algorithme glouton « à retrait » sur une instance du sac à dos.
      *
-     * @param instance         instance du sac à dos
-     * @param compRetrait      comparateur définissant l’ordre du « moins intéressant »
-     * @param compAjout        comparateur pour la phase d’ajout
-     * @return sélection finale admissible
+     * @param instance    instance du sac à dos multidimensionnel
+     * @param compRetrait comparateur définissant l’ordre « du moins intéressant au plus intéressant »
+     * @param compAjout   comparateur utilisé lors de la phase d’ajout pour améliorer la solution
+     * @return une solution admissible obtenue par retrait puis amélioration gloutonne
      */
     public List<Objet> resoudre(
             SacADos instance,
             Comparator<Objet> compRetrait,
             Comparator<Objet> compAjout) {
 
-        // --- 1) S = O (copie de tous les objets)
+        // --- 1) S = O (copie complète des objets)
         List<Objet> selection = new ArrayList<>(instance.getObjets());
 
-        // --- 2) Trier du moins intéressant AU plus intéressant
-        selection.sort(compRetrait); // compRetrait doit fournir cet ordre
+        // --- 2) Trier du moins intéressant au plus intéressant
+        selection.sort(compRetrait);
 
-        // --- 3) Phase de retrait : on enlève tant que ce n’est pas admissible
+        // --- 3) Phase de retrait : on enlève tant que la solution reste inadmissible
         for (Objet o : new ArrayList<>(selection)) {
             if (!instance.estAdmissible(selection)) {
                 selection.remove(o);
             }
         }
 
-        // Si pas admissible même après retrait total → renvoyer vide
+        // Si ce n'est toujours pas admissible → renvoyer vide
         if (!instance.estAdmissible(selection)) {
             return new ArrayList<>();
         }
 
-        // --- 4) Phase d’ajout
-        // Repartir de la liste filtrée → on cherche à améliorer
-        List<Objet> debut = new ArrayList<>(selection);
-
-        List<Objet> resultat = new ArrayList<>(debut);
-        List<Objet> tous = instance.getObjets();
-
-        // objets qui ne sont pas déjà dans la sélection filtrée
+        // --- 4) Phase d’ajout : tentative d'amélioration
+        List<Objet> resultat = new ArrayList<>(selection);
         List<Objet> candidats = new ArrayList<>();
-        for (Objet o : tous)
-            if (!debut.contains(o))
-                candidats.add(o);
 
-        // tri des candidats selon critère d’ajout
+        // candidats = objets non présents dans la sélection actuelle
+        for (Objet o : instance.getObjets()) {
+            if (!selection.contains(o)) {
+                candidats.add(o);
+            }
+        }
+
+        // tri selon critère d’ajout
         candidats.sort(compAjout);
 
-        // tentative d’ajout
-        for (Objet obj : candidats) {
-            resultat.add(obj);
+        // tentative d’ajout gloutonne
+        for (Objet o : candidats) {
+            resultat.add(o);
             if (!instance.estAdmissible(resultat)) {
-                resultat.remove(obj);
+                resultat.remove(o);
             }
         }
 

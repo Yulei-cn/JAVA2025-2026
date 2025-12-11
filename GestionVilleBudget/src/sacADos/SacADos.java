@@ -5,31 +5,43 @@ import java.util.List;
 /**
  * Représente un sac à dos multidimensionnel utilisé pour la sélection optimale d’objets.
  *
+ * <p>
  * Le sac à dos est défini par :
- *   une dimension k (nombre de contraintes ou budgets)
- *   un tableau de budgets, un par dimension
- *   une liste d’objets pouvant être sélectionnés
+ * <ul>
+ *   <li>une dimension k (nombre de contraintes ou budgets)</li>
+ *   <li>un tableau de budgets, un par dimension</li>
+ *   <li>une liste d’objets pouvant être sélectionnés</li>
+ * </ul>
+ * </p>
  *
+ * <p>
  * Il fournit des méthodes permettant :
- *   de vérifier si une sélection respecte les contraintes
- *   de calculer l’utilité totale d’une sélection
+ * <ul>
+ *   <li>de vérifier si une sélection respecte les contraintes</li>
+ *   <li>de calculer l’utilité totale d’une sélection</li>
+ * </ul>
+ * </p>
+ *
+ * @author ZHU YULEI
+ * @version 3.0
+ * @since TP7
  */
 public class SacADos {
 
-    /** Nombre de dimensions (ou contraintes) */
+    /** Nombre de dimensions (ou contraintes). */
     private int dimension;
 
-    /** Budgets maximaux pour chaque dimension */
+    /** Budgets maximaux pour chaque dimension. */
     private int[] budgets;
 
-    /** Liste d’objets disponibles */
+    /** Liste des objets disponibles dans cette instance. */
     private List<Objet> objets;
 
     /**
      * Construit un sac à dos multidimensionnel.
      *
-     * @param dimension nombre de contraintes
-     * @param budgets   budgets associés à chaque dimension
+     * @param dimension nombre de contraintes (dimension du problème)
+     * @param budgets   budgets associés à chaque dimension (taille = dimension)
      * @param objets    liste des objets disponibles
      */
     public SacADos(int dimension, int[] budgets, List<Objet> objets) {
@@ -53,15 +65,17 @@ public class SacADos {
         this.objets = objets;
     }
 
-
+    /** @return la dimension du sac à dos. */
     public int getDimension() {
         return dimension;
     }
 
+    /** @return les budgets maximaux selon chaque dimension. */
     public int[] getBudgets() {
         return budgets;
     }
 
+    /** @return la liste des objets disponibles. */
     public List<Objet> getObjets() {
         return objets;
     }

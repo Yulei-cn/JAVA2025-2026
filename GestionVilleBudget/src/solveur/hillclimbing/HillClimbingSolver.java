@@ -7,99 +7,125 @@ import java.util.Random;
 import sacADos.Objet;
 import sacADos.SacADos;
 
-
-
 /**
- * Implémente la méthode du Hill Climbing pour le problème
+ * Implémente l'algorithme de Hill Climbing pour le problème
  * du sac à dos multidimensionnel.
  *
- * Le voisinage est défini par :
- * S' = (S \ E) ∪ A
- * avec |E| ≤ t et |A| ≤ t.
+ * <p>
+ * Le voisinage utilisé est défini par :
+ * <br>
+ * <code>S' = (S \ E) ∪ A</code> où |E| ≤ t et |A| ≤ t.
+ * </p>
+ *
+ * <p>
+ * L’algorithme cherche de meilleurs voisins jusqu'à atteindre un optimum local.
+ * Une variante avec mouvements sur plateau est également supportée.
+ * </p>
+ *
+ * @author ZHU YULEI
+ * @version 2.0
  */
 public class HillClimbingSolver {
-	/**
-	 * Version simplifiée : voisinage t = 1 et plateauMoves = 0
-	 */
-	public List<Objet> resoudre(SacADos instance, List<Objet> solutionInitiale) {
-	    return resoudre(instance, solutionInitiale, 1, 0);
-	}
-
 
     private Random rnd = new Random();
 
     /**
-     * Lance une recherche locale via Hill Climbing.
+     * Version simplifiée avec voisinage t=1 et aucun mouvement de plateau.
      *
      * @param instance         instance du sac à dos
-     * @param solutionInitiale solution admissible obtenue par un glouton
-     * @param t                taille du voisinage (1 ou 2)
-     * @param maxPlateauMoves  nombre de mouvements possibles sur plateau
-     * @return solution atteignant un optimum local
+     * @param solutionInitiale solution initiale admissible
+     * @return solution améliorée ou optimum local
      */
-    public List<Objet> resoudre(SacADos instance,
+    public List<Objet> resoudre(SacADos instance, List<Objet> solutionInitiale) {
+        return resoudre(instance, solutionInitiale, 1, 0);
+    }
+
+    /**
+     * Exécute la recherche locale Hill Climbing.
+     *
+     * <p>
+     * Le voisinage étudié se construit en retirant jusqu’à t objets et
+     * en ajoutant jusqu’à t objets. L’algorithme explore tous les voisins
+     * admissibles et conserve le meilleur.
+     * </p>
+     *
+     * @param instance         instance du sac à dos à optimiser
+     * @param solutionInitiale solution admissible (souvent obtenue via un glouton)
+     * @param t                taille du voisinage (nombre max. d’ajouts/retraits)
+     * @param maxPlateauMoves  nombre de déplacements autorisés sur plateau (utilité égale)
+     * @return la meilleure solution trouvée (optimum local)
+     *
+     * @throws NullPointerException     si la solution initiale est null
+     * @throws IllegalArgumentException si t ≤ 0 ou maxPlateauMoves < 0
+     */
+    public List<Objet> resoudre(
+            SacADos instance,
             List<Objet> solutionInitiale,
             int t,
             int maxPlateauMoves) {
 
-if (solutionInitiale == null) {
-throw new NullPointerException("La solution initiale ne peut pas être null.");
-}
-if (t <= 0) {
-throw new IllegalArgumentException("Le paramètre t doit être strictement positif.");
-}
-if (maxPlateauMoves < 0) {
-throw new IllegalArgumentException("Le nombre de mouvements sur plateau doit être >= 0.");
-}
+        if (solutionInitiale == null) {
+            throw new NullPointerException("La solution initiale ne peut pas être null.");
+        }
+        if (t <= 0) {
+            throw new IllegalArgumentException("Le paramètre t doit être strictement positif.");
+        }
+        if (maxPlateauMoves < 0) {
+            throw new IllegalArgumentException("Le nombre de mouvements sur plateau doit être >= 0.");
+        }
 
-List<Objet> solution = new ArrayList<>(solutionInitiale);
-int utiliteCourante = instance.utiliteTotale(solution);
+        List<Objet> solution = new ArrayList<>(solutionInitiale);
+        int utiliteCourante = instance.utiliteTotale(solution);
 
-boolean amelioration = true;
+        boolean amelioration = true;
 
-while (amelioration) {
-amelioration = false;
+        // =======================
+        //     Boucle principale
+        // =======================
+        while (amelioration) {
 
-List<Objet> meilleurVoisin = solution;
-int meilleureUtilite = utiliteCourante;
+            amelioration = false;
+            List<Objet> meilleurVoisin = solution;
+            int meilleureUtilite = utiliteCourante;
 
-int plateauMoves = maxPlateauMoves;
+            int plateauMoves = maxPlateauMoves;
 
-// === Génération du voisinage ===
-for (Objet remove : instance.getObjets()) {
+            // =======================
+            //   Génération voisins
+            // =======================
+            for (Objet remove : instance.getObjets()) {
 
-List<Objet> voisinBase = new ArrayList<>(solution);
-voisinBase.remove(remove);
+                List<Objet> voisinBase = new ArrayList<>(solution);
+                voisinBase.remove(remove);
 
-for (Objet add : instance.getObjets()) {
-if (solution.contains(add)) continue;
+                for (Objet add : instance.getObjets()) {
+                    if (solution.contains(add)) continue;
 
-List<Objet> voisin = new ArrayList<>(voisinBase);
-voisin.add(add);
+                    List<Objet> voisin = new ArrayList<>(voisinBase);
+                    voisin.add(add);
 
-if (!instance.estAdmissible(voisin))
-    continue;
+                    if (!instance.estAdmissible(voisin))
+                        continue;
 
-int utilite = instance.utiliteTotale(voisin);
+                    int utilite = instance.utiliteTotale(voisin);
 
-if (utilite > meilleureUtilite) {
-    meilleureUtilite = utilite;
-    meilleurVoisin = voisin;
-    amelioration = true;
-}
-else if (utilite == meilleureUtilite && plateauMoves > 0) {
-    plateauMoves--;
-    meilleurVoisin = voisin;
-    amelioration = true;
-}
-}
-}
+                    if (utilite > meilleureUtilite) {
+                        meilleureUtilite = utilite;
+                        meilleurVoisin = voisin;
+                        amelioration = true;
+                    }
+                    else if (utilite == meilleureUtilite && plateauMoves > 0) {
+                        plateauMoves--;
+                        meilleurVoisin = voisin;
+                        amelioration = true;
+                    }
+                }
+            }
 
-solution = meilleurVoisin;
-utiliteCourante = meilleureUtilite;
-}
+            solution = meilleurVoisin;
+            utiliteCourante = meilleureUtilite;
+        }
 
-return solution;
-}
-
+        return solution;
+    }
 }
