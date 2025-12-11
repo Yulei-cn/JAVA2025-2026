@@ -1,4 +1,4 @@
-package sacADos;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import sacADos.Objet;
+import sacADos.SacADos;
 
 /**
  * Tests unitaires pour la classe {@link SacADos}.

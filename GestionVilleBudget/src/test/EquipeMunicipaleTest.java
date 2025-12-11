@@ -1,4 +1,4 @@
-package equipe;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,6 +8,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import equipe.Elu;
+import equipe.EquipeMunicipale;
+import equipe.Evaluateur;
+import equipe.Expert;
+import equipe.Secteur;
+import equipe.TypeCout;
 
 /**
  * Tests unitaires pour la classe {@link EquipeMunicipale}.

@@ -1,4 +1,4 @@
-package solveur.glouton;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import sacADos.*;
+import solveur.glouton.Comparateurs;
+import solveur.glouton.GloutonRetraitSolver;
 
 /**
  * Tests unitaires pour {@link GloutonRetraitSolver}.

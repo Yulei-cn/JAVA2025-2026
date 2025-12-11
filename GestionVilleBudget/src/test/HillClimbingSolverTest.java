@@ -1,4 +1,4 @@
-package solveur.hillclimbing;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import sacADos.*;
+import solveur.hillclimbing.HillClimbingSolver;
 
 /**
  * Tests unitaires pour {@link HillClimbingSolver}.
