@@ -31,8 +31,8 @@ equipe/
  ├── Personne.java          (classe abstraite)
  ├── Elu.java               (évalue le bénéfice)
  ├── Evaluateur.java        (évalue les coûts)
- ├── EvaluateurRole.java    (interface)
  ├── Expert.java            (propose des projets)
+ ├── package_info.java
  ├── Projet.java
  ├── Secteur.java           (énumération : SPORT, SANTE, etc.)
  ├── TypeCout.java          (3 types de coûts)
@@ -55,8 +55,7 @@ sacADos/
  ├── Objet.java
  ├── SacADos.java
  ├── VersSacADos.java
- ├── SacADosTest.java
- └── SacADosUtiliteTest.java
+ └── package_info.java
 ```
 
 Chaque projet est converti en `Objet` :
@@ -82,13 +81,12 @@ solveur/
  ├── glouton/
  │     ├── Comparateurs.java
  │     ├── GloutonAjoutSolver.java
- │     ├── GloutonAjoutSolverTest.java
  │     ├── GloutonRetraitSolver.java
- │     └── GloutonRetraitSolverTest.java
+ │     └── package_info.java
  │
  └── hillclimbing/
        ├── HillClimbingSolver.java
-       └── HillClimbingSolverTest.java
+       └── package_info.java
 ```
 
 ### Méthodes implémentées
@@ -145,7 +143,8 @@ src/
  ├── equipe/
  ├── main/
  ├── sacADos/
- └── solveur/
+ ├── solveur/
+ └── test/
 ```
 
 > Le fichier `module-info.java` a été retiré afin de permettre l'utilisation correcte de JUnit 5 sous Eclipse.
