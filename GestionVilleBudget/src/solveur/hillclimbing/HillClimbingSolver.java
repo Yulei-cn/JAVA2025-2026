@@ -128,4 +128,111 @@ public class HillClimbingSolver {
 
         return solution;
     }
+    
+    /**
+     * Variante de Hill Climbing avec génération aléatoire des voisins.
+     *
+     * <p>
+     * À chaque itération, un nombre fixé de voisins est généré aléatoirement.
+     * Chaque voisin est construit en retirant jusqu'à {@code t} objets de la
+     * solution courante et en ajoutant jusqu'à {@code t} objets absents.
+     * </p>
+     *
+     * <p>
+     * Contrairement à la version standard, tous les voisins possibles ne sont
+     * pas explorés : seul un sous-ensemble aléatoire est considéré.
+     * </p>
+     *
+     * @param instance          instance du sac à dos à optimiser
+     * @param solutionInitiale  solution admissible initiale
+     * @param t                 taille maximale des mouvements (ajouts / retraits)
+     * @param nombreVoisins     nombre de voisins aléatoires générés par itération
+     * @param maxPlateauMoves   nombre de mouvements autorisés sur plateau
+     * @return solution correspondant à un optimum local
+     *
+     * @throws NullPointerException     si la solution initiale est null
+     * @throws IllegalArgumentException si t ≤ 0 ou nombreVoisins ≤ 0 ou maxPlateauMoves < 0
+     */
+    public List<Objet> resoudreAleatoire(
+            SacADos instance,
+            List<Objet> solutionInitiale,
+            int t,
+            int nombreVoisins,
+            int maxPlateauMoves) {
+
+        if (solutionInitiale == null) {
+            throw new NullPointerException("La solution initiale ne peut pas être null.");
+        }
+        if (t <= 0) {
+            throw new IllegalArgumentException("Le paramètre t doit être strictement positif.");
+        }
+        if (nombreVoisins <= 0) {
+            throw new IllegalArgumentException("Le nombre de voisins doit être strictement positif.");
+        }
+        if (maxPlateauMoves < 0) {
+            throw new IllegalArgumentException("Le nombre de mouvements sur plateau doit être >= 0.");
+        }
+
+        List<Objet> solution = new ArrayList<>(solutionInitiale);
+        int utiliteCourante = instance.utiliteTotale(solution);
+
+        boolean amelioration = true;
+
+        while (amelioration) {
+
+            amelioration = false;
+            List<Objet> meilleurVoisin = solution;
+            int meilleureUtilite = utiliteCourante;
+            int plateauMoves = maxPlateauMoves;
+
+            // ===============================
+            // Génération aléatoire des voisins
+            // ===============================
+            for (int i = 0; i < nombreVoisins; i++) {
+
+                List<Objet> voisin = new ArrayList<>(solution);
+
+                // --- Retrait aléatoire ---
+                int nbRetraits = rnd.nextInt(t) + 1;
+                for (int r = 0; r < nbRetraits && !voisin.isEmpty(); r++) {
+                    Objet aRetirer = voisin.get(rnd.nextInt(voisin.size()));
+                    voisin.remove(aRetirer);
+                }
+
+                // --- Ajout aléatoire ---
+                int nbAjouts = rnd.nextInt(t) + 1;
+                for (int a = 0; a < nbAjouts; a++) {
+                    Objet candidat = instance.getObjets()
+                            .get(rnd.nextInt(instance.getObjets().size()));
+                    if (!voisin.contains(candidat)) {
+                        voisin.add(candidat);
+                    }
+                }
+
+                // Vérification admissibilité
+                if (!instance.estAdmissible(voisin)) {
+                    continue;
+                }
+
+                int utilite = instance.utiliteTotale(voisin);
+
+                if (utilite > meilleureUtilite) {
+                    meilleureUtilite = utilite;
+                    meilleurVoisin = voisin;
+                    amelioration = true;
+                }
+                else if (utilite == meilleureUtilite && plateauMoves > 0) {
+                    plateauMoves--;
+                    meilleurVoisin = voisin;
+                    amelioration = true;
+                }
+            }
+
+            solution = meilleurVoisin;
+            utiliteCourante = meilleureUtilite;
+        }
+
+        return solution;
+    }
+
 }

@@ -286,17 +286,20 @@ public class Main {
 
         while (true) {
 
-            System.out.println("\n=== Tester le Hill Climbing ===");
-            System.out.println("1. HC standard (t = 1)");
-            System.out.println("2. HC avec plateau (t = 1, plateau = 3)");
-            System.out.println("0. Retour");
+        	System.out.println("\n=== Tester le Hill Climbing ===");
+        	System.out.println("1. HC standard (t = 1)");
+        	System.out.println("2. HC avec plateau (t = 1, plateau = 3)");
+        	System.out.println("3. HC aléatoire (voisins aléatoires)");
+        	System.out.println("0. Retour");
+
 
             int choix = lireChoixSousMenu("Votre choix : ");
+            HillClimbingSolver hc = new HillClimbingSolver(); 
+            
             if (choix == 0) return;
 
             List<Objet> init = new GloutonAjoutSolver().resoudre(sac, Comparateurs.f_somme());
-            HillClimbingSolver hc = new HillClimbingSolver();
-
+            
             if (choix == 1) {
                 afficherSolution("Hill Climbing (t = 1)", hc.resoudre(sac, init), sac);
             }
@@ -305,6 +308,27 @@ public class Main {
                 afficherSolution("Hill Climbing (plateau = 3)",
                         hc.resoudre(sac, init, 1, 3), sac);
             }
+            
+            if (choix == 3) {
+
+                System.out.println("=== Paramètres du Hill Climbing aléatoire ===");
+
+                int t = lireEntier("Valeur de t (ajouts/retraits max) : ");
+                int plateau = lireEntier("Nombre de mouvements sur plateau : ");
+                int nombreVoisins = lireEntier("Nombre de voisins à considérer : ");
+
+                
+
+                afficherSolution(
+                	    "Hill Climbing aléatoire",
+                	    hc.resoudreAleatoire(sac, init, t, nombreVoisins, plateau),
+                	    sac
+                	);
+
+            }
+
+
+
         }
     }
 
