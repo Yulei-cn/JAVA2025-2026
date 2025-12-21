@@ -9,7 +9,6 @@
  * <p>
  * Ce package constitue le modèle manipulé par les solveurs gloutons
  * et par la méthode de Hill Climbing.
- * </p>
  *
  * @author ZHU YULEI
  * @version 1.0

@@ -18,7 +18,6 @@ import java.util.Map;
  * </ul>
  * Les projets proposés sont évalués et, lorsqu’ils sont complets, ajoutés
  * à la liste des projets étudiés.
- * </p>
  *
  * <p>
  * Cette classe illustre l’utilisation conjointe :
@@ -27,7 +26,6 @@ import java.util.Map;
  *     <li>d’objets spécialisés (Élu, Évaluateur, Expert)</li>
  *     <li>d’un cycle de simulation orchestrant la collaboration entre rôles</li>
  * </ul>
- * </p>
  *
  * @author Yulei
  * @version 2.0

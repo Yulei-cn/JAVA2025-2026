@@ -18,10 +18,9 @@ import solveur.hillclimbing.*;
  *   <li>de tester les méthodes gloutonnes</li>
  *   <li>de tester la méthode du Hill Climbing</li>
  * </ul>
- * </p>
  *
  * @author ZHU YULEI
- * @version 5.0
+ * @version 6.0（hill algo)
  */
 public class Main {
 

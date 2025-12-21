@@ -11,7 +11,6 @@ package equipe;
  *     <li>possède une spécialisation : économique, social ou environnemental</li>
  *     <li>évalue un projet en générant un coût aléatoire selon sa spécialisation</li>
  * </ul>
- * </p>
  *
  * @author Yulei
  * @version 2.0
@@ -55,7 +54,6 @@ public class Evaluateur extends Personne {
      *
      * <p>
      * Un coût aléatoire est généré puis affecté au projet dans le champ correspondant.
-     * </p>
      *
      * @param projet projet à évaluer
      *

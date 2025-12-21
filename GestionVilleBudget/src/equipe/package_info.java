@@ -12,7 +12,6 @@
  * <p>
  * Ce package regroupe tous les éléments nécessaires pour simuler un cycle
  * complet de proposition et d’évaluation des projets.
- * </p>
  *
  * @author ZHU YULEI
  * @version 1.0

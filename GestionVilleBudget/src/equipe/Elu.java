@@ -7,7 +7,6 @@ package equipe;
  * Un élu est une {@link Personne} et dispose d’un mécanisme d’évaluation
  * simple consistant à attribuer un bénéfice estimé à chaque projet.  
  * L’évaluation repose sur une génération pseudo-aléatoire contrôlée.
- * </p>
  *
  * <p>
  * Cette classe assure :
@@ -16,7 +15,6 @@ package equipe;
  *     <li>l’attribution d’un bénéfice cohérent</li>
  *     <li>un comportement indépendant pour chaque élu</li>
  * </ul>
- * </p>
  *
  * @author Yulei
  * @version 2.0
@@ -41,7 +39,6 @@ public class Elu extends Personne {
      * <p>
      * Le bénéfice généré est un montant compris dans une plage fixe,
      * simulant une estimation réaliste d’impact socio-économique.
-     * </p>
      *
      * @param projet projet à évaluer
      * @throws IllegalArgumentException si {@code projet} est null

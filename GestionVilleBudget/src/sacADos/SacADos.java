@@ -12,7 +12,6 @@ import java.util.List;
  *   <li>un tableau de budgets, un par dimension</li>
  *   <li>une liste d’objets pouvant être sélectionnés</li>
  * </ul>
- * </p>
  *
  * <p>
  * Il fournit des méthodes permettant :
@@ -20,7 +19,6 @@ import java.util.List;
  *   <li>de vérifier si une sélection respecte les contraintes</li>
  *   <li>de calculer l’utilité totale d’une sélection</li>
  * </ul>
- * </p>
  *
  * @author ZHU YULEI
  * @version 3.0

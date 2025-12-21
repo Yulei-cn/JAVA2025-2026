@@ -19,9 +19,8 @@ import sacADos.SacADos;
  *   <li>Une fois admissible, on tente d'améliorer la solution via une phase
  *       d’ajout utilisant un second comparateur</li>
  * </ul>
- * </p>
  *
- * <p>Cette méthode combine un nettoyage (retrait) puis une optimisation locale (ajout).</p>
+ * <p>Cette méthode combine un nettoyage (retrait) puis une optimisation locale (ajout).
  *
  * @author ZHU YULEI
  * @version 2.0

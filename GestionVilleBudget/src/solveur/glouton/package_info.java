@@ -7,7 +7,6 @@
  *   <li><strong>solveur.glouton</strong> — méthodes gloutonnes à ajout / à retrait</li>
  *   <li><strong>solveur.hillclimbing</strong> — algorithme de Hill Climbing</li>
  * </ul>
- * </p>
  *
  * @author ZHU YULEI
  * @version 1.0

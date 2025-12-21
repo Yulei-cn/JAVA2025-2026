@@ -15,12 +15,10 @@ import sacADos.SacADos;
  * Le voisinage utilisé est défini par :
  * <br>
  * <code>S' = (S \ E) ∪ A</code> où |E| ≤ t et |A| ≤ t.
- * </p>
  *
  * <p>
  * L’algorithme cherche de meilleurs voisins jusqu'à atteindre un optimum local.
  * Une variante avec mouvements sur plateau est également supportée.
- * </p>
  *
  * @author ZHU YULEI
  * @version 2.0
@@ -47,7 +45,6 @@ public class HillClimbingSolver {
      * Le voisinage étudié se construit en retirant jusqu’à t objets et
      * en ajoutant jusqu’à t objets. L’algorithme explore tous les voisins
      * admissibles et conserve le meilleur.
-     * </p>
      *
      * @param instance         instance du sac à dos à optimiser
      * @param solutionInitiale solution admissible (souvent obtenue via un glouton)
@@ -136,12 +133,10 @@ public class HillClimbingSolver {
      * À chaque itération, un nombre fixé de voisins est généré aléatoirement.
      * Chaque voisin est construit en retirant jusqu'à {@code t} objets de la
      * solution courante et en ajoutant jusqu'à {@code t} objets absents.
-     * </p>
      *
      * <p>
      * Contrairement à la version standard, tous les voisins possibles ne sont
      * pas explorés : seul un sous-ensemble aléatoire est considéré.
-     * </p>
      *
      * @param instance          instance du sac à dos à optimiser
      * @param solutionInitiale  solution admissible initiale

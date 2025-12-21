@@ -12,11 +12,9 @@ package equipe;
  * </ul>
  * Elle constitue la super-classe des différents rôles municipaux :
  * <code>Élu</code>, <code>Evaluateur</code> et <code>Expert</code>.
- * </p>
  *
  * <p>
  * Cette classe ne peut pas être instanciée directement.
- * </p>
  *
  * @author ZHU YULEI
  * @version 2.0

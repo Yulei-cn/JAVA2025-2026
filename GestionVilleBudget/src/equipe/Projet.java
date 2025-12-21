@@ -9,7 +9,6 @@ package equipe;
  * ainsi qu’un bénéfice attendu pour la collectivité.  
  * Un projet n'est considéré comme <strong>complet</strong> que lorsque
  * toutes ces évaluations ont été réalisées.
- * </p>
  *
  * <p>
  * Cette classe fournit également :
@@ -18,7 +17,6 @@ package equipe;
  *     <li>des méthodes utilitaires facilitant l’utilisation dans les solveurs</li>
  *     <li>une protection par exceptions lorsque les valeurs manquent</li>
  * </ul>
- * </p>
  *
  * @author Yulei
  * @version 2.0

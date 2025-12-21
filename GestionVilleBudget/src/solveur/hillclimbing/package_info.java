@@ -6,7 +6,6 @@
  * Le solveur améliore une solution initiale (souvent gloutonne)
  * en explorant des voisins (retrait/ajout d’objets) et en gardant
  * les solutions admissibles les plus utiles.
- * </p>
  *
  * @author ZHU YULEI
  * @version 1.0

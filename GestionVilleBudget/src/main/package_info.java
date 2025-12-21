@@ -10,7 +10,6 @@
  *   <li>tester les solveurs gloutons,</li>
  *   <li>tester la méthode de Hill Climbing.</li>
  * </ul>
- * </p>
  *
  * @author ZHU YULEI
  * @version 1.0

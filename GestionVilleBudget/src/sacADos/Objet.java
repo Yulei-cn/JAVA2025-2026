@@ -12,7 +12,6 @@ import java.util.Arrays;
  *   <li>un tableau de coûts représentant la consommation dans chaque dimension</li>
  *   <li>un label optionnel permettant d'afficher un nom lisible (ex : un projet)</li>
  * </ul>
- * </p>
  *
  * @author VotreNom
  * @version 5.0

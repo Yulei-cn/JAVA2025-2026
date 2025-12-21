@@ -17,12 +17,10 @@ import sacADos.SacADos;
  *   <li>on parcourt ensuite les objets dans cet ordre ;</li>
  *   <li>chaque objet est ajouté si et seulement si les contraintes du sac à dos restent respectées.</li>
  * </ul>
- * </p>
  *
  * <p>
  * Cette approche permet d'obtenir rapidement une solution admissible,
  * mais elle n'est pas garantie optimale.
- * </p>
  *
  * @author ZHU YULEI
  * @version 2.0
