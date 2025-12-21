@@ -4,15 +4,15 @@
 
 Université Paris Dauphine – PSL
 
----
+ 
 
 ## 1. Objectif général
 
 Ce projet simule :
 
-* le fonctionnement d’une équipe municipale qui propose et évalue des projets
+- le fonctionnement d’une équipe municipale qui propose et évalue des projets  
   (sport, santé, culture, éducation, attractivité économique, etc.)
-* l’optimisation budgétaire via le problème du sac à dos multidimensionnel
+- l’optimisation budgétaire via le **problème du sac à dos multidimensionnel**
   (*Multidimensional Knapsack Problem*)
 
 Deux grandes parties travaillent ensemble :
@@ -20,165 +20,188 @@ Deux grandes parties travaillent ensemble :
 1. Simulation orientée objet (`package equipe`)
 2. Optimisation du budget (`packages sacADos`, `solveur.glouton`, `solveur.hillclimbing`)
 
----
+ 
 
 ## 2. Simulation de l'équipe municipale
 
 ### Architecture objet (package `equipe/`)
 
-```
 equipe/
- ├── Personne.java          (classe abstraite)
- ├── Elu.java               (évalue le bénéfice)
- ├── Evaluateur.java        (évalue les coûts)
- ├── Expert.java            (propose des projets)
- ├── package_info.java
- ├── Projet.java
- ├── Secteur.java           (énumération : SPORT, SANTE, etc.)
- ├── TypeCout.java          (3 types de coûts)
- └── EquipeMunicipale.java
-```
+├── Personne.java (classe abstraite)
+├── Elu.java
+├── Evaluateur.java
+├── Expert.java
+├── Projet.java
+├── Secteur.java (SPORT, SANTE, CULTURE, etc.)
+├── TypeCout.java (ECONOMIQUE, SOCIAL, ENVIRONNEMENTAL)
+├── EquipeMunicipale.java
+└── package-info.java
+
+ 
 
 ### Fonctionnement d’un cycle de simulation
 
 1. Les experts proposent des projets selon leur secteur
 2. Les évaluateurs attribuent les coûts (économique, social, environnemental)
 3. L’élu(e) attribue un bénéfice
-4. Le projet est stocké dans `projetsEtudies`
+4. Les projets sont stockés dans `projetsEtudies`
 
----
+ 
 
 ## 3. Sac à Dos Multidimensionnel (package `sacADos/`)
 
-```
 sacADos/
- ├── Objet.java
- ├── SacADos.java
- ├── VersSacADos.java
- └── package_info.java
-```
+├── Objet.java
+├── SacADos.java
+├── VersSacADos.java
+└── package-info.java
+
+ 
 
 Chaque projet est converti en `Objet` :
 
-* utilité = bénéfice
-* coûts = tableau d’entiers
+- utilité = bénéfice du projet
+- coûts = tableau d’entiers
 
-Deux modes :
+Deux modes de génération sont disponibles :
 
-1. Budgets selon coûts (3 dimensions)
-2. Budgets selon secteurs (5 dimensions)
+1. Budgets selon les types de coûts (3 dimensions)
+2. Budgets selon les secteurs (5 dimensions)
 
-`VersSacADos` permet la transformation automatique.
+La classe `VersSacADos` assure la transformation automatique.
 
----
+ 
 
 ## 4. Solveurs d’optimisation
 
-### Packages
+### Organisation des packages
 
-```
 solveur/
- ├── glouton/
- │     ├── Comparateurs.java
- │     ├── GloutonAjoutSolver.java
- │     ├── GloutonRetraitSolver.java
- │     └── package_info.java
- │
- └── hillclimbing/
-       ├── HillClimbingSolver.java
-       └── package_info.java
-```
+├── glouton/
+│ ├── Comparateurs.java
+│ ├── GloutonAjoutSolver.java
+│ ├── GloutonRetraitSolver.java
+│ └── package-info.java
+│
+└── hillclimbing/
+├── HillClimbingSolver.java
+└── package-info.java
 
-### Méthodes implémentées
+ 
+ 
 
-* **Glouton Ajout**
-  Ajout des objets triés selon un critère (`f_somme`, `f_max`, etc.)
+### Solveurs gloutons
 
-* **Glouton Retrait**
-  Retrait progressif des objets les moins utiles, puis amélioration gloutonne
+- **Glouton Ajout**  
+  Ajout progressif des objets selon un critère (`f_somme`, `f_max`, etc.)
 
-* **Hill Climbing**
-  Recherche locale à partir d’une solution gloutonne
+- **Glouton Retrait**  
+  Retrait des objets les moins intéressants puis amélioration de la solution
 
-Paramètres configurables :
+ 
 
-* `t` : taille du voisinage
-* `plateauMoves` : nombre de mouvements neutres autorisés
+## 5. Hill Climbing
 
----
+La classe `HillClimbingSolver` implémente trois variantes :
 
-## 5. Classe Main — Menu interactif
+### Hill Climbing standard
 
-```
+- voisinage déterministe
+- paramètre `t = 1`
+- arrêt sur optimum local
+
+### Hill Climbing avec plateau
+
+- autorise un nombre limité de mouvements à utilité égale
+- paramètre `plateauMoves`
+
+### Hill Climbing aléatoire
+
+- génération aléatoire d’un nombre fixé de voisins
+- paramètres configurables :
+  - `t` (ajouts / retraits max)
+  - `plateauMoves`
+  - `nombreVoisins`
+
+Cette version permet une exploration plus large de l’espace des solutions
+et limite le blocage dans des optima locaux.
+
+ 
+
+## 6. Classe Main — Menu interactif
+
 main/
- ├── Main.java
- └── TestAll.java
-```
+├── Main.java
+└── package-info.java
 
-### Main.java
+ 
 
-Fonctionnalités :
+Le menu interactif permet :
 
-* lancer un cycle de simulation
-* générer une instance SacADos
-* choisir un algorithme de résolution
-* afficher la sélection et l’utilité totale
+- d’afficher l’équipe municipale
+- d’exécuter un cycle de simulation
+- de générer une instance SacADos
+- de tester les solveurs gloutons
+- de tester les trois versions du Hill Climbing
 
-### TestAll.java
+Tous les sous-menus disposent d’une option **Retour**.
 
-Permet d'exécuter les tests unitaires essentiels :
+ 
 
-1. Glouton Ajout — `f_somme`
-2. Glouton Ajout — `f_max`
-3. Glouton Retrait
-4. Hill Climbing (t = 1)
-5. Hill Climbing (t = 1, plateau = 3)
+## 7. Tests unitaires — JUnit 5
 
----
+Chaque classe importante possède une classe de test dédiée :
 
-## 6. Structure complète du projet
+test/
+├── sacADos/
+│ ├── ObjetTest.java
+│ └── SacADosTest.java
+│
+├── solveur/glouton/
+│ ├── GloutonAjoutSolverTest.java
+│ └── GloutonRetraitSolverTest.java
+│
+└── solveur/hillclimbing/
+└── HillClimbingSolverTest.java
 
-```
-src/
- ├── equipe/
- ├── main/
- ├── sacADos/
- ├── solveur/
- └── test/
-```
+ 
 
-> Le fichier `module-info.java` a été retiré afin de permettre l'utilisation correcte de JUnit 5 sous Eclipse.
+Les tests utilisent :
 
----
+- `@BeforeEach`
+- assertions `assertEquals`, `assertTrue`, etc.
+- une convention de nommage claire :  
+  `methodeTestee_Contexte_ResultatAttendu`
 
-## 7. Compilation & Exécution
+ 
 
-### Compilation en ligne de commande
+## 8. Documentation — Javadoc
 
-```bash
-javac -d bin $(find src -name "*.java")
-```
+- chaque package contient un fichier `package-info.java`
+- classes et méthodes publiques documentées
+- génération possible via Eclipse ou via l’outil `javadoc`
 
-### Exécution
+ 
 
-```bash
-java -cp bin main.Main
-```
+## 9. Compilation & Exécution
 
----
+### Exécution depuis Eclipse
 
-## 8. Tests unitaires — JUnit 5
+Run As → Java Application → main.Main
 
-Tous les tests sont exécutables via Eclipse :
+ 
 
-```
-Right click on any *Test.java → Run As → JUnit Test
-```
+### Exécution des tests unitaires
 
-Éléments testés :
+Run As → JUnit Test
 
-* admissibilité des solutions
-* utilité totale
-* performance des solveurs gloutons
-* amélioration via Hill Climbing
+ 
 
+ 
+
+## 10. Remarques finales
+
+- séparation claire entre simulation et optimisation
+- usage des classes abstraites et des interfaces
+- algorithmes paramétrables et comparables
+- projet conforme aux exigences du cours Java-Objet
